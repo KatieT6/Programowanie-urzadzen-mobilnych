@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal interface IDataLayer
+    interface IDataLayer
     {
+        ILibrary Library { get; set; }
+        public static IDataLayer CreateDataLayer(ILibrary library = default) { return new DataLayer(library); }
     }
 }

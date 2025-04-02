@@ -8,6 +8,10 @@ namespace Data
 {
     internal class Library : ILibrary
     {
+        public Library() 
+        {
+            Shelf = new();
+        }
         public List<IBook> Shelf { get; set; }
 
         public void AddBook(IBook book)
@@ -18,6 +22,26 @@ namespace Data
             }
         }
 
+        public IBook GetBookByID(Guid id)
+        {
+            var book = Shelf.FirstOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                throw new InvalidOperationException("Book not found.");
+            }
+            else
+            {
+                return book;
+            }
+        }
+
+        public void RemoveBook(IBook book)
+        {
+            var toBeRemoved = Shelf.Find(b => b.Id == book.Id);
+            if (toBeRemoved == null) return;
+            Shelf.Remove(toBeRemoved);
+        }
+
         public void AddBooks(List<IBook> books)
         {
             foreach (var book in books)
@@ -26,12 +50,9 @@ namespace Data
             }
         }
 
-        public void RemoveBook(IBook book)
+        public List<IBook> GetBooksByID(List<Guid> ids)
         {
-            if (!Shelf.Any(b => b.Id == book.Id))
-            {
-                Shelf.Remove(book);
-            }
+            return Shelf.FindAll(b => ids.Contains(b.Id));
         }
 
         public void RemoveBooks(List<IBook> books)
@@ -41,11 +62,7 @@ namespace Data
                 RemoveBook(book);
             }
         }
-        public List<IBook> GetBooksByID(List<Guid> ids)
-        {
-            return Shelf.FindAll(b => ids.Contains(b.Id));
-        }
-
+        
         public List<IBook> GetBooksByType(BookType type)
         {
             return Shelf.FindAll(b => b.Type == type);
@@ -74,18 +91,7 @@ namespace Data
             return Shelf;
         }
 
-        public IBook GetBookByID(Guid id)
-        {
-            var book =  Shelf.FirstOrDefault(b => b.Id == id);
-            if (book == null)
-            {
-                throw new InvalidOperationException("Book not found.");
-            }
-            else
-            {
-                return book;
-            }
-        }
+        
     }
     
 }

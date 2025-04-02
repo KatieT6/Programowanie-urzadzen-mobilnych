@@ -4,10 +4,10 @@ using System.Net.Mail;
 namespace DataTest;
 
 [TestClass]
-public class BookTest
+public sealed class IBookTest
 {
     [TestMethod]
-    public void ConstructorTest_Default()
+    public void IBookTest_ConstructorTest_Default()
     {
         var book = IBook.CreateBook();
 
@@ -20,7 +20,7 @@ public class BookTest
     }
 
     [TestMethod]
-    public void ConstructorTest_Arg()
+    public void IBookTest_ConstructorTest_Arg()
     {
         var book = IBook.CreateBook("a", "b", 0, BookType.SciFi);
 
@@ -33,7 +33,7 @@ public class BookTest
     }
 
     [TestMethod]
-    public void ConstructorTest_InitStruct()
+    public void IBookTest_ConstructorTest_InitStruct()
     {
         BookInit bookInit = new BookInit("a", "b", 1, BookType.Romance);
         var book = IBook.CreateBook(bookInit);

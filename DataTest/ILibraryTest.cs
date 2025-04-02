@@ -4,19 +4,10 @@ using System.Linq.Expressions;
 namespace DataTest;
 
 [TestClass]
-public class LibraryDataLayerTests
+public sealed class ILibraryTest
 {
     [TestMethod]
-    public void DataLayerTest_CreateDataLayer()
-    {
-        IDataLayer layer = IDataLayer.CreateDataLayer();
-        
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.Library);
-    }
-
-    [TestMethod]
-    public void LibraryTest_AddBook()
+    public void ILibraryTest_AddBook()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -32,7 +23,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_GetBookByID()
+    public void ILibraryTest_GetBookByID()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -50,7 +41,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_RemoveBook()
+    public void ILibraryTest_RemoveBook()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -71,7 +62,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_AddBooks()
+    public void ILibraryTest_AddBooks()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -94,7 +85,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_GetBooksByID()
+    public void ILibraryTest_GetBooksByID()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -119,7 +110,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_RemoveBooks()
+    public void ILibraryTest_RemoveBooks()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -144,7 +135,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_GetBooksByType()
+    public void ILibraryTest_GetBooksByType()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -173,7 +164,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_MarkBookAsAvailable()
+    public void ILibraryTest_MarkBookAsAvailable()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -193,7 +184,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_MarkBookAsUnavailable()
+    public void ILibraryTest_MarkBookAsUnavailable()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
@@ -213,7 +204,7 @@ public class LibraryDataLayerTests
     }
 
     [TestMethod]
-    public void LibraryTest_GetAllBooks()
+    public void ILibraryTest_GetAllBooks()
     {
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);

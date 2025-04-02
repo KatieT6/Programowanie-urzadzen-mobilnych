@@ -15,5 +15,9 @@ namespace Data
         BookType Type { get; set; }
         Guid Id { get; set; }
         bool IsAvailable { get; set; }
+
+        public static IBook CreateBook() { return new Book(); }
+        public static IBook CreateBook(string title, string author, int year, BookType type) { return new Book(title, author, year, type); }
+        public static IBook CreateBook(BookInit init) { return new Book(init); }
     }
 }

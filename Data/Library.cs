@@ -74,5 +74,18 @@ namespace Data
             return Shelf;
         }
 
+        public IBook GetBookByID(Guid id)
+        {
+            var book =  Shelf.FirstOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                throw new InvalidOperationException("Book not found.");
+            }
+            else
+            {
+                return book;
+            }
+        }
     }
+    
 }

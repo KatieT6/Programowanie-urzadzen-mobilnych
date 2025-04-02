@@ -20,6 +20,8 @@ namespace Data
         public List<IBook> GetBooksByType(BookType type);
         public List<IBook> GetBooksByID(List<Guid> ids);
 
+        public IBook GetBookByID(Guid id);
+
 
     }
 }

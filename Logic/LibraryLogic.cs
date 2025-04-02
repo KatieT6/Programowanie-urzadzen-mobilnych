@@ -30,6 +30,22 @@ namespace Logic
             }
         }
 
+        public IBook GetBookByID(Guid id)
+        {
+            lock (_lock)
+            {
+                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
+                if (book != null)
+                {
+                    return book;
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Book not found.");
+                }
+            }
+        }
+
         public List<IBook> GetBooksByID(List<Guid> ids)
         {
             lock (_lock)
@@ -52,7 +68,7 @@ namespace Logic
             {
                 if (book.IsAvailable)
                 {
-                    book.IsAvailable = false;
+                    library.MarkBookAsUnavailable(book);
                 }
                 else
                 {
@@ -83,7 +99,7 @@ namespace Logic
             {
                 if (!book.IsAvailable)
                 {
-                    book.IsAvailable = true;
+                    library.MarkBookAsAvailable(book);
                 }
                 else
                 {

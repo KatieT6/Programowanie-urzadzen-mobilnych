@@ -17,6 +17,8 @@ namespace Logic
         public List<IBook> GetBooksByType(BookType type);
         public List<IBook> GetBooksByID(List<Guid> ids);
 
+        public IBook GetBookByID(Guid id);
+
         public List<IBook> GetAllBooks();
     }
 }

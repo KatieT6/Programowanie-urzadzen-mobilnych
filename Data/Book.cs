@@ -7,6 +7,22 @@ using System.Threading.Tasks;
 
 namespace Data
 {
+    public struct BookInit
+    {
+        public string title;
+        public string author;
+        public int year;
+        public BookType type;
+
+        public BookInit(string title, string author, int year, BookType type)
+        {
+            this.title = title;
+            this.author = author;
+            this.year = year;
+            this.type = type;
+        }
+    }
+
     internal class Book : IBook
     {
         public string Title { get; set; }
@@ -18,6 +34,16 @@ namespace Data
 
         public Guid Id { get; set; }
 
+        public Book(BookInit init)
+        {
+            Id = Guid.NewGuid();
+            Title = init.title;
+            Author = init.author;
+            Year = init.year;
+            Type = init.type;
+            IsAvailable = true;
+        }
+
         public Book(string title, string author, int year, BookType type)
         {
             Id = Guid.NewGuid();
@@ -25,6 +51,16 @@ namespace Data
             Author = author;
             Year = year;
             Type = type;
+            IsAvailable = true;
+        }
+
+        public Book() 
+        {
+            Id = Guid.NewGuid();
+            Title = string.Empty;
+            Author = string.Empty;
+            Year = 0;
+            Type = BookType.NonFiction;
             IsAvailable = true;
         }
 

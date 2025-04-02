@@ -8,7 +8,7 @@ namespace Data
 {
     public interface IDataLayer
     {
-        ILibrary Library { get; set; }
+        public ILibrary Library { get; set; }
         public static IDataLayer CreateDataLayer(ILibrary library = default) { return new DataLayer(library); }
     }
 }

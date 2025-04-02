@@ -28,18 +28,19 @@ namespace PresentationModel
             Books.Add(book);
         }
 
-        /*public void LendBook(ModelBook book)
+        public void LendBook(ModelBook book)
         {
-            List<ModelBook> borrowedBooks = new List<ModelBook>();
-
+            Guid id = book.Id;
+            _libraryLogic.LendBook(_libraryLogic.GetBookByID(id));
             foreach (ModelBook b in Books)
             {
-                if (!b.IsAvailable)
+                if (b.IsAvailable)
                 {
-                    borrowedBooks.Add(_libraryLogic.AddBook);
+                    book.IsAvailable = false;
                 }
             }
-        }*/
+            OnPropertyChanged(nameof(Books));
+        }
 
         public void LoadBooks()
         {
@@ -56,6 +57,7 @@ namespace PresentationModel
                     book.IsAvailable)
                     );
             }
+
             OnPropertyChanged(nameof(Books));
         }
 
@@ -64,16 +66,20 @@ namespace PresentationModel
             Books.Remove(book);
         }
 
-        /*public void ReturnBook(ModelBook book)
+        public void ReturnBook(ModelBook book)
         {
-            if (!book.IsAvailable)
+            Guid id = book.Id;
+            _libraryLogic.ReturnBook(_libraryLogic.GetBookByID(id));
+            foreach (ModelBook b in Books)
             {
-
-                _libraryLogic.ReturnBook(book);
-                book.IsAvailable = true;
-                OnPropertyChanged(nameof(Books));
+                if (!b.IsAvailable)
+                {
+                    book.IsAvailable = false;
+                }
             }
-        }*/
+
+            OnPropertyChanged(nameof(Books));  
+        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

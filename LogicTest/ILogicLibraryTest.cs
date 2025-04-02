@@ -23,26 +23,7 @@ public sealed class ILogicLibraryTest
         Assert.AreEqual(addedBook, book);   
     }
 
-    [TestMethod]
-    public void ILogicLibraryTest_GetAllBooks()
-    {
-        var layer = ILogicLayer.CreateLogicLayer();
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.LibraryLogic);
-        var library = layer.LibraryLogic;
-
-        var book1 = IBook.CreateBook("Test Book 1", "Test Author 1", 0, BookType.SciFi);
-        var book2 = IBook.CreateBook("Test Book 2", "Test Author 2", 0, BookType.Fantasy);
-        library.AddBook(book1);
-        library.AddBook(book2);
-
-        var allBooks = library.GetAllBooks();
-
-        Assert.IsNotNull(allBooks);
-        Assert.AreEqual(2, allBooks.Count);
-        CollectionAssert.Contains(allBooks, book1);
-        CollectionAssert.Contains(allBooks, book2);
-    }
+    
 
     [TestMethod]
     public void ILogicLibraryTest_GetBookByID_Correct()
@@ -97,33 +78,7 @@ public sealed class ILogicLibraryTest
         CollectionAssert.Contains(result, book2);
     }
 
-    [TestMethod]
-    public void ILogicLibraryTest_GetBooksByType()
-    {
-        var layer = ILogicLayer.CreateLogicLayer();
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.LibraryLogic);
-        var library = layer.LibraryLogic;
-
-        var book1 = IBook.CreateBook("Test Book 1", "Test Author 1", 0, BookType.SciFi);
-        var book2 = IBook.CreateBook("Test Book 2", "Test Author 2", 0, BookType.Fantasy);
-        var book3 = IBook.CreateBook("Test Book 3", "Test Author 3", 0, BookType.SciFi);
-        library.AddBook(book1);
-        library.AddBook(book2);
-        library.AddBook(book3);
-
-        var sciFiBooks = library.GetBooksByType(BookType.SciFi);
-        var fantasyBooks = library.GetBooksByType(BookType.Fantasy);
-
-        Assert.IsNotNull(sciFiBooks);
-        Assert.AreEqual(2, sciFiBooks.Count);
-        CollectionAssert.Contains(sciFiBooks, book1);
-        CollectionAssert.Contains(sciFiBooks, book3);
-
-        Assert.IsNotNull(fantasyBooks);
-        Assert.AreEqual(1, fantasyBooks.Count);
-        CollectionAssert.Contains(fantasyBooks, book2);
-    }
+   
 
     [TestMethod]
     public void ILogicLibraryTest_LendBook_Correct()

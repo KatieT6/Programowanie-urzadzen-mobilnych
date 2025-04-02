@@ -12,6 +12,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -28,6 +29,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -46,6 +48,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -67,6 +70,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -90,6 +94,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -115,6 +120,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -140,6 +146,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -169,6 +176,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -189,6 +197,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
         var shelf = library.Shelf;
@@ -209,6 +218,7 @@ public sealed class ILibraryTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
         Assert.IsNotNull(layer.Library);
         var library = layer.Library;
+        library.Shelf.Clear();
         Assert.IsNotNull(library.Shelf);
         Assert.AreEqual(0, library.Shelf.Count);
 

@@ -36,7 +36,7 @@
                                     <TextBlock Text="{Binding Year}" Margin="5" Height="15"/>
                                     <TextBlock Text="{Binding BookType}" Margin="5" Height="15"/>
                                     <DockPanel LastChildFill="True">
-                                        <Button Content="Borrow" Command="{Binding DataContext.BorrowClick, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" DockPanel.Dock="Bottom"/>
+                                        <Button Content="Borrow" Command="{Binding DataContext.BorrowClick, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" DockPanel.Dock="Bottom" IsEnabled="{Binding IsAvailable}"/>
                                     </DockPanel>
                                 </StackPanel>
                             </Border>

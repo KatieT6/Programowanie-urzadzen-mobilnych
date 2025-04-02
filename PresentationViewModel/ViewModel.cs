@@ -24,25 +24,21 @@ namespace PresentationViewModel
                 _books.Add(book);
             }
 
-            BorrowClick = new RelayCommand((id) => BorrowClickHandler((Guid)id));
+            BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
 
         }
 
 
         public ICommand BorrowClick { get; set; }
 
-        private void BorrowClickHandler(Guid id)
+        private void BorrowClickHandler(ModelBook selectedBook)
         {
-            foreach (ModelBook book in ModelAPI.Library.GetBooks())
+            if (selectedBook != null && selectedBook.IsAvailable)
             {
-                if (book.Id == id)
-                {
-                    _modelAPI.Library.LendBook(book);
-                    book.IsAvailable = false;
-                    OnPropertyChanged(nameof(Books));
-                }
+                //_modelAPI.Library.LendBook(selectedBook);
+                selectedBook.IsAvailable = false;
+                OnPropertyChanged(nameof(Books));
             }
-            
         }
 
 

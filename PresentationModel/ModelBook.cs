@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PresentationModel
 {
-    public class ModelBook 
+    public class ModelBook : INotifyPropertyChanged
     {
 
         private string _title;

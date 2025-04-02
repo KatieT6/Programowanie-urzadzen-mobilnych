@@ -11,7 +11,7 @@
         <vm:ViewModel/>
     </Window.DataContext>
     <Grid HorizontalAlignment="Center" Width="700">
-        <Grid Margin="0,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="450">
+        <Grid Margin="-45,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="435">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,70,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <ItemsControl ItemsSource="{Binding Books}" Margin="92,0,0,40" Width="271" Height="920" RenderTransformOrigin="0.5,0.5">
                     <ItemsControl.RenderTransform>
@@ -45,8 +45,40 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
-        <Grid Margin="455,24,10,20">
-            <TextBlock HorizontalAlignment="Left" Margin="95,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65"><Run Language="pl-pl" Text="Your Books"/></TextBlock>
+        <Grid Margin="270,24,10,20">
+            <TextBlock HorizontalAlignment="Center" Margin="95,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"><Run Language="pl-pl" Text="Your Books"/></TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,70,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <ItemsControl ItemsSource="{Binding BorrowedBooks}" Margin="92,0,0,40" Width="271" Height="875" RenderTransformOrigin="0.5,0.5">
+                    <ItemsControl.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-0.157"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="-0.497"/>
+                        </TransformGroup>
+                    </ItemsControl.RenderTransform>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0" VerticalAlignment="Stretch" Width="100" Height="165">
+                                <StackPanel VerticalAlignment="Bottom">
+                                    <TextBlock Text="{Binding Title}" Margin="5" Height="20"/>
+                                    <TextBlock Text="{Binding Author}" Margin="5" Height="15"/>
+                                    <TextBlock Text="{Binding Year}" Margin="5" Height="15"/>
+                                    <TextBlock Text="{Binding BookType}" Margin="5" Height="15"/>
+                                    <DockPanel LastChildFill="True">
+                                        <Button Content="Return" Command="{Binding DataContext.ReturnClick, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" DockPanel.Dock="Bottom" IsEnabled="True"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

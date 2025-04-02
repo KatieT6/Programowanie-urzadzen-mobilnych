@@ -18,6 +18,7 @@ namespace PresentationViewModel
             _library = _modelAPI.Library;
 
             _books = _library.Books;
+            _borrowedBooks = new ObservableCollection<ModelBook>();
             _modelAPI.Library.LoadBooks();
             foreach (ModelBook book in _modelAPI.Library.GetBooks())
             {
@@ -25,11 +26,13 @@ namespace PresentationViewModel
             }
 
             BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
+            ReturnClick = new RelayCommand(param => ReturnClickHandler(param as ModelBook));
 
         }
 
 
         public ICommand BorrowClick { get; set; }
+        public ICommand ReturnClick { get; set; }
 
         private void BorrowClickHandler(ModelBook selectedBook)
         {
@@ -37,7 +40,23 @@ namespace PresentationViewModel
             {
                 //_modelAPI.Library.LendBook(selectedBook);
                 selectedBook.IsAvailable = false;
+                //_books.Remove(selectedBook);
+                _borrowedBooks.Add(selectedBook);
                 OnPropertyChanged(nameof(Books));
+                OnPropertyChanged(nameof(BorrowedBooks));
+            }
+        }
+
+        private void ReturnClickHandler(ModelBook selectedBook)
+        {
+            if (selectedBook != null && !selectedBook.IsAvailable)
+            {
+                //_modelAPI.Library.LendBook(selectedBook);
+                selectedBook.IsAvailable = true;
+                //_books.Remove(selectedBook);
+                _borrowedBooks.Remove(selectedBook);
+                OnPropertyChanged(nameof(Books));
+                OnPropertyChanged(nameof(BorrowedBooks));
             }
         }
 
@@ -46,6 +65,8 @@ namespace PresentationViewModel
         private readonly ModelAbstractApi _modelAPI;
         private ModelLibrary _library;
         private ObservableCollection<ModelBook> _books;
+        private ObservableCollection<ModelBook> _borrowedBooks;
+
         private Timer _timer;
 
         #endregion
@@ -77,6 +98,19 @@ namespace PresentationViewModel
                 if (_books != value)
                 {
                     _books = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ObservableCollection<ModelBook> BorrowedBooks
+        {
+            get { return _borrowedBooks; }
+            set
+            {
+                if (_borrowedBooks != value)
+                {
+                    _borrowedBooks = value;
                     OnPropertyChanged();
                 }
             }

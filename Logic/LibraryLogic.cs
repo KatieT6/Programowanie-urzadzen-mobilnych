@@ -9,6 +9,7 @@ namespace Logic
 {
     public class LibraryLogic : ILibraryLogic
     {
+        private readonly object _lock = new object();
         private ILibrary library;
 
         public LibraryLogic(ILibrary library = default)
@@ -23,66 +24,87 @@ namespace Logic
 
         public List<IBook> GetAllBooks()
         {
-            return library.Shelf;
+            lock (_lock)
+            {
+                return library.Shelf;
+            }
         }
 
         public List<IBook> GetBooksByID(List<Guid> ids)
         {
-            return library.GetBooksByID(ids);
+            lock (_lock)
+            {
+                return library.GetBooksByID(ids);
+            }
         }
 
         public List<IBook> GetBooksByType(BookType type)
         {
-            return library.GetBooksByType(type);
+            lock (_lock)
+            {
+                return library.GetBooksByType(type);
+            }
         }
 
         public void LendBook(IBook book)
         {
-            if (book.IsAvailable)
+            lock (_lock)
             {
-                book.IsAvailable = false;
-            }
-            else
-            {
-                throw new InvalidOperationException("Book is already lent out.");
+                if (book.IsAvailable)
+                {
+                    book.IsAvailable = false;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Book is already lent out.");
+                }
             }
         }
 
         public void LendBookByID(Guid id)
         {
-            var book = library.Shelf.FirstOrDefault(b => b.Id == id);
-            if (book != null)
+            lock (_lock)
             {
-                LendBook(book);
-            }
-            else
-            {
-                throw new KeyNotFoundException("Book not found.");
+                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
+                if (book != null)
+                {
+                    LendBook(book);
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Book not found.");
+                }
             }
         }
 
         public void ReturnBook(IBook book)
         {
-            if (!book.IsAvailable)
+            lock (_lock) 
             {
-                book.IsAvailable = true;
-            }
-            else
-            {
-                throw new InvalidOperationException("Book is already returned.");
+                if (!book.IsAvailable)
+                {
+                    book.IsAvailable = true;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Book is already returned.");
+                }
             }
         }
 
         public void ReturnBookByID(Guid id)
         {
-            var book = library.Shelf.FirstOrDefault(b => b.Id == id);
-            if (book != null)
+            lock (_lock)
             {
-                ReturnBook(book);
-            }
-            else
-            {
-                throw new KeyNotFoundException("Book not found.");
+                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
+                if (book != null)
+                {
+                    ReturnBook(book);
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Book not found.");
+                }
             }
         }
     }

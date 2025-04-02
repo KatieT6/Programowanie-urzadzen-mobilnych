@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PresentationView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Library" Height="450" Width="800">
+
     <Grid HorizontalAlignment="Center">
         <Grid Margin="-120,24,120,20">
             <Grid.RowDefinitions>
@@ -18,55 +18,18 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="0" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow" Click="Button_Click"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165" Grid.RowSpan="2">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="2" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="3" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Grid.Column="0" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Grid.Column="2" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" Margin="0,0,0,-1" Width="100">
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow" RenderTransformOrigin="0.5,0.5"/>
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="3" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
-                <StackPanel>
-                    <TextBlock Text="Title:" Margin="5" Height="134"/>
-                    <Button Content="Borrow"/>
-                </StackPanel>
-            </Border>
-            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Library" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,-13,0,0"/>
+            <ItemsControl ItemsSource="{Binding Books}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0" VerticalAlignment="Top" Width="100" Height="165">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" Margin="5" Height="134"/>
+                                <Button Content="Borrow" Command="{Binding DataContext.BorrowClick, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
         <Grid Margin="375,24,-140,20">
             <TextBlock HorizontalAlignment="Left" Margin="95,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="65"><Run Language="pl-pl" Text="Your Books"/></TextBlock>

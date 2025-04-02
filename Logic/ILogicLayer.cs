@@ -11,7 +11,7 @@ namespace Logic
     {
         public ILibraryLogic LibraryLogic { get;}
 
-        public static ILogicLayer CreateLogicLayer(IDataLayer data = default(IDataLayer)) 
+        public static ILogicLayer CreateLogicLayer(IDataLayer? data = null) 
         {
             return new LogicLayer(data ?? IDataLayer.CreateDataLayer()); 
         }

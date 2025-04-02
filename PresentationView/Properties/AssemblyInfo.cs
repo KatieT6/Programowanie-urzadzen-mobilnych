@@ -19,7 +19,7 @@ using System.Windows;
 // Ustawienie elementu ComVisible na wartość false sprawia, że typy w tym zestawie są niewidoczne
 // dla składników COM. Jeśli potrzebny jest dostęp do typu w tym zestawie z
 // COM, ustaw wartość true dla atrybutu ComVisible tego typu.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 //Aby rozpocząć kompilację aplikacji możliwych do zlokalizowania, ustaw
 //<UICulture>Kultura_używana_podczas_kodowania</UICulture> w pliku csproj

@@ -27,6 +27,16 @@ namespace PresentationModel
             _isAvailable = isAvaliable;
         }
 
+        public ModelBook(string title, string author, int year, string bookType)
+        {
+            _title = title;
+            _author = author;
+            _year = year;
+            _bookType = bookType;
+            _id = new Guid();
+            _isAvailable = true;
+        }
+
         public string Title
         {
             get => _title;

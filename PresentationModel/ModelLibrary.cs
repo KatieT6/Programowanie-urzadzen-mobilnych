@@ -27,6 +27,11 @@ namespace PresentationModel
         {
             Books.Add(book);
         }
+        public List<ModelBook> GetBooks()
+        {
+            LoadBooks();
+            return Books.ToList();
+        }
 
         public void LendBook(ModelBook book)
         {

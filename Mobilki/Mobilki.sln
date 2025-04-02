@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTest", "..\LogicTest\L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationModel", "..\PresentationModel\PresentationModel.csproj", "{529799D5-7BD6-4BC2-A47C-AE5FE761A24B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationView", "..\PresentationView\PresentationView.csproj", "{63951A0C-4AEA-4A49-BFA1-C6F2695E6CDE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationViewModel", "..\PresentationViewModel\PresentationViewModel.csproj", "{3FB183D8-8BE7-4452-97FC-64E627C6F910}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{529799D5-7BD6-4BC2-A47C-AE5FE761A24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{529799D5-7BD6-4BC2-A47C-AE5FE761A24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{529799D5-7BD6-4BC2-A47C-AE5FE761A24B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63951A0C-4AEA-4A49-BFA1-C6F2695E6CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63951A0C-4AEA-4A49-BFA1-C6F2695E6CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63951A0C-4AEA-4A49-BFA1-C6F2695E6CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63951A0C-4AEA-4A49-BFA1-C6F2695E6CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3FB183D8-8BE7-4452-97FC-64E627C6F910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FB183D8-8BE7-4452-97FC-64E627C6F910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FB183D8-8BE7-4452-97FC-64E627C6F910}.Release|Any CPU.ActiveCfg = Release|Any CPU

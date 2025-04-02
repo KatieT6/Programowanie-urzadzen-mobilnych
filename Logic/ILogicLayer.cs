@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    internal interface ILogicLayer
+    public interface ILogicLayer
     {
         public ILibraryLogic LibraryLogic { get;}
 

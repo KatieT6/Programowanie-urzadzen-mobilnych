@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,16 @@ using System.Threading.Tasks;
 
 namespace Logic
 {
-    internal interface ILibraryLogic
+    public interface ILibraryLogic
     {
+        public void AddBook(IBook book);
+        public void LendBook(IBook book);
+        public void ReturnBook(IBook book);
+        public void LendBookByID(Guid id);
+        public void ReturnBookByID(Guid id);
+        public List<IBook> GetBooksByType(BookType type);
+        public List<IBook> GetBooksByID(List<Guid> ids);
+
+        public List<IBook> GetAllBooks();
     }
 }

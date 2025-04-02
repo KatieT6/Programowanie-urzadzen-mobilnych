@@ -50,5 +50,29 @@ namespace Data
         {
             return Shelf.FindAll(b => b.Type == type);
         }
+
+        public void MarkBookAsAvailable(IBook book)
+        {
+            var bookToUpdate = Shelf.FirstOrDefault(b => b.Id == book.Id);
+            if (bookToUpdate != null)
+            {
+                bookToUpdate.IsAvailable = true;
+            }
+        }
+
+        public void MarkBookAsUnavailable(IBook book)
+        {
+            var bookToUpdate = Shelf.FirstOrDefault(b => b.Id == book.Id);
+            if (bookToUpdate != null)
+            {
+                bookToUpdate.IsAvailable = false;
+            }
+        }
+
+        public List<IBook> GetAllBooks()
+        {
+            return Shelf;
+        }
+
     }
 }

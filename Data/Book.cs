@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace Data
             Type = type;
             IsAvailable = true;
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 
     public enum BookType

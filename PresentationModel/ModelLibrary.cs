@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace PresentationModel
 {
-    internal class ModelLibrary : INotifyPropertyChanged
+    public class ModelLibrary : INotifyPropertyChanged
     {
         private ILibraryLogic _libraryLogic;
         public ObservableCollection<ModelBook> Books { get; set; }
 
 
-        public ModelLibrary(ILibraryLogic library, ObservableCollection<ModelBook> books)
+        public ModelLibrary(ILibraryLogic library)
         {
             _libraryLogic = library;
-            Books = books;
+            Books = new ObservableCollection<ModelBook>();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -36,29 +36,28 @@ namespace PresentationModel
             {
                 if (!b.IsAvailable)
                 {
-                    borrowedBooks.Add(_libraryLogic.);
+                    borrowedBooks.Add(_libraryLogic.AddBook);
                 }
             }
         }*/
 
-       /* public void LoadBooks()
+        public void LoadBooks()
         {
             var books = _libraryLogic.GetAllBooks();
             Books.Clear();
             foreach (var book in books)
             {
-                Books.Add(new ModelBook
-                {
-                    Title = book.Title,
-                    Author = book.Author,
-                    Year = book.Year,
-                    BookType = book.Type.ToString(),
-                    Id = book.Id,
-                    IsAvailable = book.IsAvailable
-                });
+                Books.Add(new ModelBook(
+                    book.Title,
+                    book.Author,
+                    book.Year,
+                    book.Type.ToString(),
+                    book.Id,
+                    book.IsAvailable)
+                    );
             }
             OnPropertyChanged(nameof(Books));
-        }*/
+        }
 
         public void RemoveBook(ModelBook book)
         {

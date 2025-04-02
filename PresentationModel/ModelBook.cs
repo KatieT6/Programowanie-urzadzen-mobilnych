@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PresentationModel
 {
-    internal class ModelBook 
+    public class ModelBook 
     {
 
         private string _title;
@@ -17,14 +17,14 @@ namespace PresentationModel
         private Guid _id;
         private bool _isAvailable;
 
-        public ModelBook(string title, string author, int year, string bookType)
+        public ModelBook(string title, string author, int year, string bookType, Guid id, bool isAvaliable)
         {
             _title = title;
             _author = author;
             _year = year;
             _bookType = bookType;
-            _id = Guid.NewGuid();
-            _isAvailable = true;
+            _id = id;
+            _isAvailable = isAvaliable;
         }
 
         public string Title

@@ -11,8 +11,6 @@ namespace PresentationModel
 {
     public abstract class ModelAbstractApi
     {
-        public IModelLibrary Library { get;}
-
         public ModelAbstractApi CreateModelAPI(ILogicLayer logic = default)
         {
             return new ModelAPI(logic ?? ILogicLayer.CreateLogicLayer());
@@ -22,9 +20,13 @@ namespace PresentationModel
     public class ModelAPI : ModelAbstractApi
     {
         private ILogicLayer _logicLayer { get; }
+
+        public  ModelLibrary Library;
+
         public ModelAPI(ILogicLayer logic = default)
         {
             _logicLayer = logic;
+            Library = new ModelLibrary(_logicLayer.LibraryLogic);
         }
     }
 }

@@ -7,15 +7,25 @@ using System.Threading.Tasks;
 
 namespace PresentationModel
 {
-    internal class ModelBook : IModelBook
+    internal class ModelBook 
     {
-        private IBook _book;
+
         private string _title;
         private string _author;
         private int _year;
         private string _bookType;
         private Guid _id;
         private bool _isAvailable;
+
+        public ModelBook(string title, string author, int year, string bookType)
+        {
+            _title = title;
+            _author = author;
+            _year = year;
+            _bookType = bookType;
+            _id = Guid.NewGuid();
+            _isAvailable = true;
+        }
 
         public string Title
         {

@@ -10,12 +10,13 @@ using System.Windows.Input;
 namespace PresentationViewModel
 {
     public class ViewModel : ViewModelBase
-    {   
+    {
         
-        public ViewModel()
+    public ViewModel()
         {
             _modelAPI = ModelAbstractApi.CreateModelAPI();
             _library = _modelAPI.Library;
+
             _books = _library.Books;
             _modelAPI.Library.LoadBooks();
             foreach (ModelBook book in _modelAPI.Library.GetBooks())
@@ -23,20 +24,25 @@ namespace PresentationViewModel
                 _books.Add(book);
             }
 
-            BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
+            BorrowClick = new RelayCommand((id) => BorrowClickHandler((Guid)id));
 
         }
 
 
         public ICommand BorrowClick { get; set; }
 
-        private void BorrowClickHandler(ModelBook selectedBook)
+        private void BorrowClickHandler(Guid id)
         {
-            if (selectedBook != null)
+            foreach (ModelBook book in ModelAPI.Library.GetBooks())
             {
-                _modelAPI.Library.LendBook(selectedBook);
-                OnPropertyChanged(nameof(Books));
+                if (book.Id == id)
+                {
+                    _modelAPI.Library.LendBook(book);
+                    book.IsAvailable = false;
+                    OnPropertyChanged(nameof(Books));
+                }
             }
+            
         }
 
 
@@ -45,6 +51,7 @@ namespace PresentationViewModel
         private ModelLibrary _library;
         private ObservableCollection<ModelBook> _books;
         private Timer _timer;
+
         #endregion
 
         #region gettr/settr

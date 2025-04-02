@@ -11,6 +11,14 @@ namespace Data
         public Library() 
         {
             Shelf = new();
+            AddBook(new Book("title1", "author1", 2137, BookType.SciFi));
+            AddBook(new Book("title2", "author2", 2137, BookType.SciFi));
+            AddBook(new Book("title3", "author3", 2137, BookType.SciFi));
+            AddBook(new Book("title4", "author4", 2137, BookType.SciFi));
+            AddBook(new Book("title5", "author5", 2137, BookType.SciFi));
+            AddBook(new Book("title6", "author6", 2137, BookType.SciFi));
+            AddBook(new Book("title7", "author7", 2137, BookType.SciFi));
+
         }
         public List<IBook> Shelf { get; set; }
 

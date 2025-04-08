@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface ILibrary
+    public interface IDatabase
     {
         public List<IBook> Shelf { get;}
         public void AddBook(IBook book);

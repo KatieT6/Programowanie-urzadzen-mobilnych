@@ -8,13 +8,13 @@ namespace Data
 {
     internal class DataLayer : IDataLayer
     {
-        public ILibrary Library { get; set; }
+        public IDatabase Library { get; set; }
 
-        public static IDataLayer CreateDataLayer(ILibrary library = default) { return new DataLayer(library); }
+        public static IDataLayer CreateDataLayer(IDatabase library = default) { return new DataLayer(library); }
 
-        internal DataLayer(ILibrary library = default)
+        internal DataLayer(IDatabase library = default)
         {
-            Library = library ?? new Library();
+            Library = library ?? new Database();
         }
     }
 }

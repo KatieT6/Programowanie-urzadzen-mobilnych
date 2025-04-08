@@ -1,0 +1,101 @@
+﻿TITLE,AUTHOR,YEAR,GENERE
+Dune,Frank Herbert,1965,SciFi
+Neuromancer,William Gibson,1984,SciFi
+Foundation,Isaac Asimov,1951,SciFi
+Snow Crash,Neal Stephenson,1992,SciFi
+The Left Hand of Darkness,Ursula K. Le Guin,1969,SciFi
+Hyperion,Dan Simmons,1989,SciFi
+The Martian,Andy Weir,2011,SciFi
+Ender's Game,Orson Scott Card,1985,SciFi
+Red Mars,Kim Stanley Robinson,1992,SciFi
+Blindsight,Peter Watts,2006,SciFi
+The Hobbit,J.R.R. Tolkien,1937,Fantasy
+The Name of the Wind,Patrick Rothfuss,2007,Fantasy
+A Game of Thrones,George R.R. Martin,1996,Fantasy
+Mistborn,Brandon Sanderson,2006,Fantasy
+The Lies of Locke Lamora,Scott Lynch,2006,Fantasy
+The Way of Kings,Brandon Sanderson,2010,Fantasy
+The Black Company,Glen Cook,1984,Fantasy
+The Earthsea Trilogy,Ursula K. Le Guin,1968,Fantasy
+The Wheel of Time: Eye of the World,Robert Jordan,1990,Fantasy
+The Once and Future King,T.H. White,1958,Fantasy
+Pride and Prejudice,Jane Austen,1813,Romance
+Jane Eyre,Charlotte Brontë,1847,Romance
+Outlander,Diana Gabaldon,1991,Romance
+The Notebook,Nicholas Sparks,1996,Romance
+Me Before You,Jojo Moyes,2012,Romance
+Twilight,Stephenie Meyer,2005,Romance
+Gone with the Wind,Margaret Mitchell,1936,Romance
+The Rosie Project,Graeme Simsion,2013,Romance
+The Time Traveler’s Wife,Audrey Niffenegger,2003,Romance
+Beautiful Disaster,Jamie McGuire,2011,Romance
+It,Stephen King,1986,Horror
+The Haunting of Hill House,Shirley Jackson,1959,Horror
+House of Leaves,Mark Z. Danielewski,2000,Horror
+Pet Sematary,Stephen King,1983,Horror
+Bird Box,Josh Malerman,2014,Horror
+The Exorcist,William Peter Blatty,1971,Horror
+Hell House,Richard Matheson,1971,Horror
+The Silence,Tim Lebbon,2015,Horror
+Mexican Gothic,Silvia Moreno-Garcia,2020,Horror
+The Ritual,Adam Nevill,2011,Horror
+The Girl with the Dragon Tattoo,Stieg Larsson,2005,Thriller
+Gone Girl,Gillian Flynn,2012,Thriller
+The Da Vinci Code,Dan Brown,2003,Thriller
+The Silence of the Lambs,Thomas Harris,1988,Thriller
+Shutter Island,Dennis Lehane,2003,Thriller
+Before I Go to Sleep,S.J. Watson,2011,Thriller
+The Woman in the Window,A.J. Finn,2018,Thriller
+Behind Closed Doors,B.A. Paris,2016,Thriller
+I Am Watching You,Tess Stimson,2017,Thriller
+The Couple Next Door,Shari Lapena,2016,Thriller
+The Hound of the Baskervilles,Arthur Conan Doyle,1902,Mystery
+Murder on the Orient Express,Agatha Christie,1934,Mystery
+The Girl with the Dragon Tattoo,Stieg Larsson,2005,Mystery
+Big Little Lies,Liane Moriarty,2014,Mystery
+The Cuckoo's Calling,Robert Galbraith,2013,Mystery
+In the Woods,Tana French,2007,Mystery
+The No. 1 Ladies' Detective Agency,Alexander McCall Smith,1998,Mystery
+Still Life,Louise Penny,2005,Mystery
+The Reversal,Michael Connelly,2010,Mystery
+Sharp Objects,Gillian Flynn,2006,Mystery
+Sapiens,Yuval Noah Harari,2011,NonFiction
+Educated,Tara Westover,2018,NonFiction
+The Immortal Life of Henrietta Lacks,Rebecca Skloot,2010,NonFiction
+Thinking, Fast and Slow,Daniel Kahneman,2011,NonFiction
+Outliers,Malcolm Gladwell,2008,NonFiction
+Freakonomics,Steven D. Levitt & Stephen J. Dubner,2005,NonFiction
+Guns, Germs, and Steel,Jared Diamond,1997,NonFiction
+A Brief History of Time,Stephen Hawking,1988,NonFiction
+The Sixth Extinction,Elizabeth Kolbert,2014,NonFiction
+Why We Sleep,Matthew Walker,2017,NonFiction
+Wolf Hall,Hilary Mantel,2009,Historical
+The Book Thief,Markus Zusak,2005,Historical
+All the Light We Cannot See,Anthony Doerr,2014,Historical
+The Pillars of the Earth,Ken Follett,1989,Historical
+War and Peace,Leo Tolstoy,1869,Historical
+The Other Boleyn Girl,Philippa Gregory,2001,Historical
+I, Claudius,Robert Graves,1934,Historical
+Beloved,Toni Morrison,1987,Historical
+A Tale of Two Cities,Charles Dickens,1859,Historical
+The Nightingale,Kristin Hannah,2015,Historical
+Steve Jobs,Walter Isaacson,2011,Biography
+Alexander Hamilton,Ron Chernow,2004,Biography
+The Diary of a Young Girl,Anne Frank,1947,Biography
+Long Walk to Freedom,Nelson Mandela,1994,Biography
+Einstein: His Life and Universe,Walter Isaacson,2007,Biography
+Churchill: A Life,Martin Gilbert,1991,Biography
+The Wright Brothers,David McCullough,2015,Biography
+Catherine the Great: Portrait of a Woman,Robert K. Massie,2011,Biography
+When Breath Becomes Air,Paul Kalanithi,2016,Biography
+Born a Crime,Trevor Noah,2016,Biography
+The Waste Land,T.S. Eliot,1922,Poetry
+Leaves of Grass,Walt Whitman,1855,Poetry
+The Raven and Other Poems,Edgar Allan Poe,1845,Poetry
+Ariel,Sylvia Plath,1965,Poetry
+The Colossus,Sylvia Plath,1960,Poetry
+Selected Poems,Rainer Maria Rilke,1902,Poetry
+Milk and Honey,Rupi Kaur,2014,Poetry
+Divine Comedy,Dante Alighieri,1320,Poetry
+The Odyssey,Homer,-800,Poetry
+Paradise Lost,John Milton,1667,Poetry

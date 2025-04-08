@@ -10,9 +10,8 @@ namespace Logic
     public class LibraryLogic : ILibraryLogic
     {
         private readonly object _lock = new object();
-        private ILibrary library;
-
-        public LibraryLogic(ILibrary library = default)
+        private IDatabase library;
+        public LibraryLogic(IDatabase library = default)
         {
             this.library = library;
         }

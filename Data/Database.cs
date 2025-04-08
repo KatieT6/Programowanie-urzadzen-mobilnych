@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class Library : ILibrary
+    internal class Database : IDatabase
     {
-        public Library() 
+        public Database() 
         {
             Shelf = new();
             AddBook(new Book("title1", "author1", 2137, BookType.SciFi));

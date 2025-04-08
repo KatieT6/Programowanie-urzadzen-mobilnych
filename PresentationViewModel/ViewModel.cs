@@ -17,10 +17,10 @@ namespace PresentationViewModel
             _modelAPI = ModelAbstractApi.CreateModelAPI();
             _library = _modelAPI.Library;
 
-            _books = _library.Books;
+            _books = new ObservableCollection<ModelBook>();
             _borrowedBooks = new ObservableCollection<ModelBook>();
             _modelAPI.Library.LoadBooks();
-            foreach (ModelBook book in _modelAPI.Library.GetBooks())
+            foreach (ModelBook book in _library.GetBooks())
             {
                 _books.Add(book);
             }
@@ -38,9 +38,9 @@ namespace PresentationViewModel
         {
             if (selectedBook != null && selectedBook.IsAvailable)
             {
-                //_modelAPI.Library.LendBook(selectedBook);
-                selectedBook.IsAvailable = false;
-                //_books.Remove(selectedBook);
+                
+                _library.LendBook(selectedBook);
+                RefreshLibrary();
                 _borrowedBooks.Add(selectedBook);
                 OnPropertyChanged(nameof(Books));
                 OnPropertyChanged(nameof(BorrowedBooks));
@@ -51,12 +51,22 @@ namespace PresentationViewModel
         {
             if (selectedBook != null && !selectedBook.IsAvailable)
             {
-                //_modelAPI.Library.LendBook(selectedBook);
                 selectedBook.IsAvailable = true;
-                //_books.Remove(selectedBook);
+                _library.ReturnBook(selectedBook);
+                RefreshLibrary();
                 _borrowedBooks.Remove(selectedBook);
                 OnPropertyChanged(nameof(Books));
                 OnPropertyChanged(nameof(BorrowedBooks));
+            }
+        }
+
+        private void RefreshLibrary()
+        {
+
+            _books.Clear();
+            foreach (ModelBook book in _library.GetBooks())
+            {
+                _books.Add(book);
             }
         }
 

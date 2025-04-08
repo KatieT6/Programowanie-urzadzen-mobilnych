@@ -1,13 +1,14 @@
 ﻿using Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic
 {
-    public interface ILibraryLogic
+    public interface ILibraryLogic : INotifyPropertyChanged
     {
         public void AddBook(IBook book);
         public void LendBook(IBook book);

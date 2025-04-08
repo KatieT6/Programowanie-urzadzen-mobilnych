@@ -1,7 +1,9 @@
 ﻿using Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,9 +18,12 @@ namespace Logic
             this.library = library;
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public void AddBook(IBook book)
         {
             library.AddBook(book);
+            OnPropertyChanged(nameof(book));
         }
 
         public List<IBook> GetAllBooks()
@@ -69,10 +74,10 @@ namespace Logic
                 {
                     library.MarkBookAsUnavailable(book);
                 }
-                else
+                /*else
                 {
                     throw new InvalidOperationException("Book is already lent out.");
-                }
+                }*/
             }
         }
 
@@ -84,11 +89,13 @@ namespace Logic
                 if (book != null)
                 {
                     LendBook(book);
+
+                    OnPropertyChanged(nameof(book));
                 }
-                else
+                /*else
                 {
                     throw new KeyNotFoundException("Book not found.");
-                }
+                }*/
             }
         }
 
@@ -99,6 +106,7 @@ namespace Logic
                 if (!book.IsAvailable)
                 {
                     library.MarkBookAsAvailable(book);
+                    OnPropertyChanged(nameof(book));
                 }
                 else
                 {
@@ -121,6 +129,11 @@ namespace Logic
                     throw new KeyNotFoundException("Book not found.");
                 }
             }
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

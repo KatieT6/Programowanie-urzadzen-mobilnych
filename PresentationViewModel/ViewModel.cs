@@ -107,7 +107,7 @@ namespace PresentationViewModel
                         Request? request = JsonSerializer.Deserialize<Request>(entry);
                         if (request != null)
                         {
-                            Console.WriteLine($"Recieved: {request.Name}");
+                            Console.WriteLine($"Recieved: {entry}");
 
                             if(request.Name == RequestTypes.LOAD_REPLY)
                             {
@@ -299,6 +299,7 @@ namespace PresentationViewModel
             _borrowedBooks.Add(selectedBook);
 
             OnPropertyChanged(nameof(BorrowedBooks));
+            OnPropertyChanged(nameof(Books));
         }
 
         private void ReturnReply(List<string> args)
@@ -307,6 +308,7 @@ namespace PresentationViewModel
             if (selectedBook == null) return;
             _borrowedBooks.Remove(selectedBook);
             OnPropertyChanged(nameof(BorrowedBooks));
+            OnPropertyChanged(nameof(Books));
         }
 
         private void LoadReply(List<string> args)

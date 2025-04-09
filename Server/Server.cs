@@ -130,13 +130,11 @@ internal class Server : IServer
             {
                 if (client.State == WebSocketState.Open)
                 {
-                    await LoadReply(client, new());
+                    LoadReply(client, new()).Wait();
                 }
             }
 
         }
-
-        await SendToSingleClientAsync(socket, "RETURN_REPLY");
     }
 
     private async Task LoadReply(WebSocket socket, List<string> args)
@@ -150,6 +148,8 @@ internal class Server : IServer
     private async Task HandleRequest(WebSocket socket, string message)
     {
         Request? request = JsonSerializer.Deserialize<Request>(message);
+
+        Console.WriteLine($"Handling: {message}");
 
         if (request == null) return;
 

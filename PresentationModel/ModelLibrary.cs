@@ -8,21 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace PresentationModel
 {
     public class ModelLibrary : INotifyPropertyChanged
     {
         private ILibraryLogic _libraryLogic;
         public ObservableCollection<ModelBook> Books { get; set; }
-
-        WSClient client = new WSClient();
-
         public ModelLibrary(ILibraryLogic library)
         {
             _libraryLogic = library;
             Books = new ObservableCollection<ModelBook>();
-            Console.WriteLine("AAAa\n");
-            new Thread(() => { client.Start("ws://localhost:8080").GetAwaiter().GetResult(); });
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

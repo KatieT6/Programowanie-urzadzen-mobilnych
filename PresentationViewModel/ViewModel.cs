@@ -7,27 +7,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using Client;
+using System.Net.Sockets;
+using System.Collections.Concurrent;
+
 namespace PresentationViewModel
 {
     public class ViewModel : ViewModelBase
     {
-        
-    public ViewModel()
+        public ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
+        private SemaphoreSlim signal_ = new(0);
+        WSClient _wsClient;
+
+        public ViewModel()
         {
+            Console.WriteLine("SSSSSS\n");
             _modelAPI = ModelAbstractApi.CreateModelAPI();
             _library = _modelAPI.Library;
 
             _books = new ObservableCollection<ModelBook>();
             _borrowedBooks = new ObservableCollection<ModelBook>();
+
+            _wsClient = new WSClient("ws://localhost:5000/ws", messageQueue, signal_);
+
             _modelAPI.Library.LoadBooks();
             foreach (ModelBook book in _library.GetBooks())
             {
                 _books.Add(book);
             }
 
+            new Thread(() =>
+            {
+                var task = _wsClient.Start();
+            }).Start();
+
             BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
             ReturnClick = new RelayCommand(param => ReturnClickHandler(param as ModelBook));
-
         }
 
 
@@ -38,7 +53,8 @@ namespace PresentationViewModel
         {
             if (selectedBook != null && selectedBook.IsAvailable)
             {
-                
+                messageQueue.Enqueue("BorrowBook");
+                signal_.Release();
                 _library.LendBook(selectedBook);
                 RefreshLibrary();
                 _borrowedBooks.Add(selectedBook);
@@ -51,6 +67,8 @@ namespace PresentationViewModel
         {
             if (selectedBook != null && !selectedBook.IsAvailable)
             {
+                messageQueue.Enqueue("ReturnBook");
+                signal_.Release();
                 selectedBook.IsAvailable = true;
                 _library.ReturnBook(selectedBook);
                 RefreshLibrary();
@@ -62,7 +80,7 @@ namespace PresentationViewModel
 
         private void RefreshLibrary()
         {
-
+            messageQueue.Enqueue("RefreshBooks");
             _books.Clear();
             foreach (ModelBook book in _library.GetBooks())
             {

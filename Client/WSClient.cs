@@ -1,34 +1,46 @@
 ﻿
+using System;
+using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text;
 
 
 namespace Client;
 
-internal class WSClient
+public class WSClient
 {
-    public int currentResourceValue = 0;
-    
+    private string uri_;
+    private ConcurrentQueue<string> messageQueue_;
+    private SemaphoreSlim signal_;
 
-    public async Task Start(string uri)
+    public WSClient (string uri, ConcurrentQueue<string> queue, SemaphoreSlim signal)
+    {
+        uri_ = uri;
+        messageQueue_ = queue;
+        signal_ = signal;
+    }
+
+    public async Task Start()
     {
         using var socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri(uri), CancellationToken.None);
+        await socket.ConnectAsync(new Uri(uri_), CancellationToken.None);
         Console.WriteLine("Connected to server.");
 
         _ = ReceiveLoop(socket);
 
         while (true)
         {
-            var msg = Console.ReadLine();
-
-            if (msg == "exit" || msg == null) break;
-
-            for (int i = 0; i < 1000; i++)
+            if (messageQueue_.IsEmpty)
             {
-                var buffer = Encoding.UTF8.GetBytes(msg);
-                await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
+                await signal_.WaitAsync();
+                if (messageQueue_.TryDequeue(out var message))
+                {
+                    Console.WriteLine($"Sending: {message}");
+                    var buffer = Encoding.UTF8.GetBytes(message);
+                    await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+                    await Task.Delay(10);
+                }
+            }   
         }
 
         await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);

@@ -1,5 +1,6 @@
 ﻿
 using System.Net;
+using System.Xml;
 
 namespace Client;
 
@@ -7,10 +8,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var client = new WSClient();
-        var uri = "ws://localhost:5000/ws";
-        var task = client.Start(uri);
-        task.Wait();
-        Console.WriteLine("AAA");
+        //var client = new WSClient("ws://localhost:5000/ws");
+        //var task = client.Start();
     }
 }

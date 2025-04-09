@@ -24,6 +24,14 @@ internal class Server : IServer
     public Server() 
     {
         logicLayer = ILogicLayer.CreateLogicLayer();
+        publisherQueue.Enqueue(new BookInit("The Great Gatsby", "F. Scott Fitzgerald", 1925, BookType.Romance));
+        publisherQueue.Enqueue(new BookInit("1984", "George Orwell", 1949, BookType.SciFi));
+        publisherQueue.Enqueue(new BookInit("The Hobbit", "J.R.R. Tolkien", 1937, BookType.Fantasy));
+        publisherQueue.Enqueue(new BookInit("Dune", "Frank Herbert", 1965, BookType.SciFi));
+        publisherQueue.Enqueue(new BookInit("Pride and Prejudice", "Jane Austen", 1813, BookType.Romance));
+        publisherQueue.Enqueue(new BookInit("The Catcher in the Rye", "J.D. Salinger", 1951, BookType.Mystery));
+        publisherQueue.Enqueue(new BookInit("The Lord of the Rings", "J.R.R. Tolkien", 1954, BookType.Fantasy));
+        publisherQueue.Enqueue(new BookInit("Brave New World", "Aldous Huxley", 1932, BookType.SciFi));
     }
 
     private Task SendToSingleClientAsync(WebSocket socket, string message)
@@ -74,7 +82,7 @@ internal class Server : IServer
     {
         while (true)
         {
-            await Task.Delay(20000);
+            await Task.Delay(5000);
             if (publisherQueue.Count > 0)
             {
                 var bookInit = publisherQueue.Dequeue();

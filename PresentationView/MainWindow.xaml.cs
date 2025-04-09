@@ -19,7 +19,6 @@ namespace PresentationView
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new PresentationViewModel.ViewModel();
         }
     }
 }

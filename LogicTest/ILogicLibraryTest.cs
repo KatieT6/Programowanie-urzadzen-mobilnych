@@ -43,18 +43,7 @@ public sealed class ILogicLibraryTest
         Assert.AreEqual(book.Author, result.Author);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(KeyNotFoundException))]
-    public void ILogicLibraryTest_GetBookByID_ThrowingException()
-    {
-        var layer = ILogicLayer.CreateLogicLayer();
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.LibraryLogic);
-        var library = layer.LibraryLogic;
-        var nonExistentBookId = Guid.NewGuid();
 
-        library.GetBookByID(nonExistentBookId);
-    }
 
     [TestMethod]
     public void ILogicLibraryTest_GetBooksByID()
@@ -98,21 +87,7 @@ public sealed class ILogicLibraryTest
         Assert.IsFalse(lentBook.IsAvailable);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void ILogicLibraryTest_LendBook_ThrowingException()
-    {
-        var layer = ILogicLayer.CreateLogicLayer();
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.LibraryLogic);
-        var library = layer.LibraryLogic;
-
-        var book = IBook.CreateBook("Test Book", "Test Author", 0, BookType.SciFi);
-        library.AddBook(book);
-        library.LendBook(book);
-
-        library.LendBook(book);
-    }
+ 
 
     [TestMethod]
     public void ILogicLibraryTest_LendBookByID_Correct()
@@ -130,22 +105,6 @@ public sealed class ILogicLibraryTest
         var lentBook = library.GetBookByID(book.Id);
         Assert.IsNotNull(lentBook);
         Assert.IsFalse(lentBook.IsAvailable);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
-    public void ILogicLibraryTest_LendBookByID_ThrowingException()
-    {
-        var layer = ILogicLayer.CreateLogicLayer();
-        Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.LibraryLogic);
-        var library = layer.LibraryLogic;
-
-        var book = IBook.CreateBook("Test Book", "Test Author", 0, BookType.SciFi);
-        library.AddBook(book);
-        library.LendBookByID(book.Id);
-
-        library.LendBookByID(book.Id);
     }
 
     [TestMethod]

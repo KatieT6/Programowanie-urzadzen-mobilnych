@@ -19,5 +19,10 @@ namespace Data
         public static IBook CreateBook() { return new Book(); }
         public static IBook CreateBook(string title, string author, int year, BookType type) { return new Book(title, author, year, type); }
         public static IBook CreateBook(BookInit init) { return new Book(init); }
+
+        public static IBook CreateBook(string title, string author, int year, BookType type, Guid id, bool isAvailable)
+        {
+            return new Book(title, author, year, type, id, isAvailable);
+        }
     }
 }

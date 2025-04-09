@@ -64,6 +64,16 @@ namespace Data
             IsAvailable = true;
         }
 
+        public Book(string title, string author, int year, BookType type, Guid id, bool isAvailable) : this(title, author, year, type)
+        {
+            Title = title;
+            Author = author;
+            Year = year;
+            Type = type;
+            Id = id;
+            IsAvailable = isAvailable;
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 

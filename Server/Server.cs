@@ -5,13 +5,14 @@ using System.Net;
 using System.Text;
 using Data;
 using System.Text.Json;
-
+using Communication;
+using PresentationModel;
 namespace Server;
 
 internal class Server : IServer
 {
     private ILogicLayer logicLayer;
-
+    private ModelAPI modelAPI;
     private HttpListener listener_ = new();
     private ConcurrentDictionary<string, WebSocket> clients_ = new();
 
@@ -19,11 +20,45 @@ internal class Server : IServer
 
     private Queue<BookInit> publisherQueue = new();
 
-    private SemaphoreSlim signal_ = new(0);
-    
+    private SemaphoreSlim queueSignal_ = new(0);
+
+    private ConcurrentDictionary<RequestTypes, Func<WebSocket, List<string>, Task>> mapping = new();
+
+    private SemaphoreSlim mappingSignal_ = new(0);
+
     public Server() 
     {
         logicLayer = ILogicLayer.CreateLogicLayer();
+        modelAPI = new ModelAPI(logicLayer);
+        int i = 5;
+        foreach (var line in File.ReadLines("book_list.txt"))
+        {
+            if (i < 0) break;
+            i--;
+            // Skip the header
+            if (line.StartsWith("TITLE,AUTHOR,YEAR,GENERE"))
+                continue;
+
+            var parts = line.Split(',');
+
+            if (parts.Length != 4)
+                continue; // Skip invalid lines
+
+            var title = parts[0].Trim();
+            var author = parts[1].Trim();
+            if (!int.TryParse(parts[2].Trim(), out var year))
+                continue; // Skip lines with invalid year
+
+            if (!Enum.TryParse(parts[3].Trim(), true, out BookType type))
+                continue; // Skip lines with invalid genre
+
+            logicLayer!.LibraryLogic.AddBook(IBook.CreateBook(title, author, year, type));
+        }
+
+        mapping.TryAdd(RequestTypes.BORROW, BorrowReply);
+        mapping.TryAdd(RequestTypes.RETURN, ReturnReply);
+        mapping.TryAdd(RequestTypes.LOAD, LoadReply);
+
         publisherQueue.Enqueue(new BookInit("The Great Gatsby", "F. Scott Fitzgerald", 1925, BookType.Romance));
         publisherQueue.Enqueue(new BookInit("1984", "George Orwell", 1949, BookType.SciFi));
         publisherQueue.Enqueue(new BookInit("The Hobbit", "J.R.R. Tolkien", 1937, BookType.Fantasy));
@@ -54,8 +89,72 @@ internal class Server : IServer
         }
     }
 
+    private async Task BorrowReply(WebSocket socket, List<string> args)
+    {
+        Console.WriteLine($"Handling borrow request");
+        var arg = args[0];
+        Guid id = Guid.Parse(arg);
+        
+        var book = logicLayer.LibraryLogic.GetBookByID(id);
+        if (book.IsAvailable)
+        {
+            logicLayer.LibraryLogic.LendBookByID(id);
+            Request request = new Request(RequestTypes.BORROW_REPLY, new List<string>() { id.ToString() });
+            SendToSingleClientAsync(socket, JsonSerializer.Serialize(request)).Wait();
+            Task.Delay(250).Wait();
+            foreach (var client in clients_.Values)
+            {
+                if (client.State == WebSocketState.Open)
+                {
+                    await LoadReply(client, new());
+                }
+            }
+
+        }
+    }
+
+    private async Task ReturnReply(WebSocket socket, List<string> args)
+    {
+        Console.WriteLine($"Handling reuturn request");
+        var arg = args[0];
+        Guid id = Guid.Parse(arg);
+        var book = logicLayer.LibraryLogic.GetBookByID(id);
+
+        if (!book.IsAvailable)
+        {
+            logicLayer.LibraryLogic.ReturnBookByID(id);
+            Request request = new Request(RequestTypes.RETURN_REPLY, new List<string>() { id.ToString() });
+            SendToSingleClientAsync(socket, JsonSerializer.Serialize(request)).Wait();
+            Task.Delay(250).Wait();
+            foreach (var client in clients_.Values)
+            {
+                if (client.State == WebSocketState.Open)
+                {
+                    await LoadReply(client, new());
+                }
+            }
+
+        }
+
+        await SendToSingleClientAsync(socket, "RETURN_REPLY");
+    }
+
+    private async Task LoadReply(WebSocket socket, List<string> args)
+    {
+        var serialized = JsonSerializer.Serialize(logicLayer.LibraryLogic.GetAllBooks());
+        Request request = new Request(RequestTypes.LOAD_REPLY, new List<string>() { serialized });
+        var serializedRequest = JsonSerializer.Serialize(request);
+        await SendToSingleClientAsync(socket, serializedRequest);
+    }
+
     private async Task HandleRequest(WebSocket socket, string message)
     {
+        Request? request = JsonSerializer.Deserialize<Request>(message);
+
+        if (request == null) return;
+
+        _ = mapping[request!.Name](socket, request!.Args);
+
         await Task.Delay(1);
     }
     
@@ -63,7 +162,7 @@ internal class Server : IServer
     {
         while (true)
         {
-            await signal_.WaitAsync();
+            await queueSignal_.WaitAsync();
 
             while (queue_.TryDequeue(out var entry))
             {
@@ -88,7 +187,13 @@ internal class Server : IServer
                 var bookInit = publisherQueue.Dequeue();
                 logicLayer.LibraryLogic.AddBook(IBook.CreateBook(bookInit));
                 var message = $"New book added: {bookInit.title} by {bookInit.author} ({bookInit.year})";
-                await SendToAllClientsAsync(message);
+                foreach (var client in clients_.Values)
+                {
+                    if (client.State == WebSocketState.Open)
+                    {
+                        await LoadReply(client, new());
+                    }
+                }
                 Console.WriteLine(message);
             }
             else
@@ -117,10 +222,8 @@ internal class Server : IServer
 
                 if (result.MessageType == WebSocketMessageType.Close) break;
                 var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                Console.WriteLine($"Received from {clientId}: {msg}");
-
                 queue_.Enqueue((socket, msg));
-                signal_.Release();
+                queueSignal_.Release();
             }
         }
         finally

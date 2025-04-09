@@ -16,7 +16,7 @@ namespace PresentationModel
         private string _bookType;
         private Guid _id;
         private bool _isAvailable;
-
+        private int _type;
         public ModelBook(string title, string author, int year, string bookType, Guid id, bool isAvaliable)
         {
             _title = title;
@@ -27,12 +27,33 @@ namespace PresentationModel
             _isAvailable = isAvaliable;
         }
 
+        public ModelBook(string title, string author, int year, int type, Guid id, bool isAvaliable)
+        {
+            _title = title;
+            _author = author;
+            _year = year;
+            _type = type;
+            _id = id;
+            _isAvailable = isAvaliable;
+        }
+
         public ModelBook(string title, string author, int year, string bookType)
         {
             _title = title;
             _author = author;
             _year = year;
             _bookType = bookType;
+            _id = new Guid();
+            _isAvailable = true;
+        }
+
+        public ModelBook() 
+        {
+            _title = string.Empty;
+            _author = string.Empty;
+            _year = 0;
+            _bookType = string.Empty;
+            _type = 0;
             _id = new Guid();
             _isAvailable = true;
         }
@@ -88,6 +109,8 @@ namespace PresentationModel
                 }
             }
         }
+
+        public int Type { get => _type; set => _type = value; }
 
         public Guid Id
         {

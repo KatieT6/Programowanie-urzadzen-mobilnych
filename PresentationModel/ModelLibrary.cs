@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using Data;
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,8 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
 
 namespace PresentationModel
 {
@@ -24,6 +23,17 @@ namespace PresentationModel
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public void DeepAdd(ModelBook book)
+        {
+            var enumType = (BookType)book.Type;
+            _libraryLogic.AddBook(IBook.CreateBook(book.Title, book.Author, book.Year, enumType, book.Id, book.IsAvailable));
+        }
+
+        public void DeepClear()
+        {
+            _libraryLogic.Clear();
+        }
+
         public void AddBook(ModelBook book)
         {
             Books.Add(book);
@@ -32,6 +42,11 @@ namespace PresentationModel
         {
             LoadBooks();
             return Books.ToList();
+        }
+
+        public ModelBook? GetBookByID(Guid id)
+        {
+            return Books.FirstOrDefault(b => b.Id == id);
         }
 
         public void LendBook(ModelBook book)
@@ -91,7 +106,5 @@ namespace PresentationModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
     }
 }

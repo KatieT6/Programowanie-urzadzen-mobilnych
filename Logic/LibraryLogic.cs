@@ -26,6 +26,14 @@ namespace Logic
             OnPropertyChanged(nameof(book));
         }
 
+        public void Clear()
+        {
+            lock (_lock)
+            {
+                library.Shelf.Clear();
+            }
+        }
+
         public List<IBook> GetAllBooks()
         {
             lock (_lock)

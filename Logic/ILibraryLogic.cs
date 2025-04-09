@@ -10,6 +10,7 @@ namespace Logic
 {
     public interface ILibraryLogic : INotifyPropertyChanged
     {
+        public void Clear();
         public void AddBook(IBook book);
         public void LendBook(IBook book);
         public void ReturnBook(IBook book);

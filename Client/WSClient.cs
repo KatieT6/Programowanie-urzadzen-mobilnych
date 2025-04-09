@@ -1,6 +1,8 @@
 ﻿
+using PresentationModel;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -12,12 +14,17 @@ public class WSClient
     private string uri_;
     private ConcurrentQueue<string> messageQueue_;
     private SemaphoreSlim signal_;
-
-    public WSClient (string uri, ConcurrentQueue<string> queue, SemaphoreSlim signal)
+    private ModelLibrary library_;
+    private ObservableCollection<ModelBook> books_;
+    private ObservableCollection<ModelBook> borrowedBooks_;
+    public WSClient (string uri, ConcurrentQueue<string> queue, SemaphoreSlim signal, ModelLibrary library, ObservableCollection<ModelBook> books, ObservableCollection<ModelBook> borrowedBooks)
     {
         uri_ = uri;
         messageQueue_ = queue;
         signal_ = signal;
+        library_ = library;
+        books_ = books;
+        borrowedBooks_ = borrowedBooks;
     }
 
     public async Task Start()

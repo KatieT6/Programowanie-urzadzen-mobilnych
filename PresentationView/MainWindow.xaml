@@ -13,7 +13,7 @@
     <Grid HorizontalAlignment="Center" Width="700">
         <Grid Margin="-45,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="435">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,70,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ItemsControl ItemsSource="{Binding Books}" Margin="92,0,0,40" Width="271" Height="920" RenderTransformOrigin="0.5,0.5">
+                <ItemsControl ItemsSource="{Binding Books}" Margin="92,0,0,40" Width="271" RenderTransformOrigin="0.5,0.5">
                     <ItemsControl.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -45,10 +45,10 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
-        <Grid Margin="270,24,10,20">
-            <TextBlock HorizontalAlignment="Center" Margin="95,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"><Run Language="pl-pl" Text="Your Books"/></TextBlock>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,70,0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <ItemsControl ItemsSource="{Binding BorrowedBooks}" Margin="92,0,0,40" Width="271" Height="875" RenderTransformOrigin="0.5,0.5">
+        <Grid Margin="350,24,10,20">
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"><Run Language="pl-pl" Text="Your Books"/></TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top" Width="340">
+                <ItemsControl ItemsSource="{Binding BorrowedBooks}" Margin="92,0,0,40" Width="271" RenderTransformOrigin="0.5,0.5">
                     <ItemsControl.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

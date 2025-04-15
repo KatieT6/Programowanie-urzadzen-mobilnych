@@ -34,6 +34,11 @@ namespace PresentationViewModel
         private ObservableCollection<ModelBook> _books;
         private ObservableCollection<ModelBook> _borrowedBooks;
 
+        private string _selectedBookType = "All";
+        private ObservableCollection<string> _bookTypes;
+
+
+
         private Timer _timer;
 
         public ModelAbstractApi ModelAPI
@@ -93,6 +98,32 @@ namespace PresentationViewModel
             }
         }
 
+        public ObservableCollection<string> BookTypes
+        {
+            get => _bookTypes;
+            set
+            {
+                _bookTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SelectedBookType
+        {
+            get => _selectedBookType;
+            set
+            {
+                if (_selectedBookType != value)
+                {
+                    _selectedBookType = value;
+                    OnPropertyChanged();
+                    lock (_booksChangedLock)
+                    {
+                        booksChanged = true; 
+                    }
+                }
+            }
+        }
         private bool booksChanged = false;
         private object _booksChangedLock = new();
 
@@ -159,10 +190,16 @@ namespace PresentationViewModel
                         {
                             booksChanged = false;
                             var bks = _library.GetBooks();
+                            if (SelectedBookType != "All")
+                            {
+                                bks = _library.GetBooksByType((BookType)Enum.Parse(typeof(BookType), SelectedBookType));
+                            }
+                            
                             _books.Clear();
                             foreach (ModelBook book in bks)
                             {
-                                _books.Add(book);
+
+                                 _books.Add(book);
                             }
                         }
                         catch (Exception e)
@@ -217,13 +254,14 @@ namespace PresentationViewModel
             _books = new ObservableCollection<ModelBook>();
             _borrowedBooks = new ObservableCollection<ModelBook>();
 
-            //Load books from server
-
-            //_modelAPI.Library.LoadBooks();
-            //foreach (ModelBook book in _library.GetBooks())
-            //{
-            //    _books.Add(book);
-            //}
+            _bookTypes = new ObservableCollection<string> { "All" };
+            foreach (var type in Enum.GetValues(typeof(BookType)))
+            {
+                if (type != null)
+                {
+                    _bookTypes.Add(type.ToString());
+                }
+            }
 
             new Thread(() =>
             {

@@ -44,6 +44,24 @@ namespace PresentationModel
             return Books.ToList();
         }
 
+        public List<ModelBook> GetBooksByType(BookType type)
+        {
+            var books = _libraryLogic.GetBooksByType(type);
+            var modelBooks = new List<ModelBook>();
+            foreach (var book in books)
+            {
+                modelBooks.Add(new ModelBook(
+                    book.Title,
+                    book.Author,
+                    book.Year,
+                    book.Type.ToString(),
+                    book.Id,
+                    book.IsAvailable)
+                    );
+            }
+            return modelBooks;
+        }
+
         public ModelBook? GetBookByID(Guid id)
         {
             return Books.FirstOrDefault(b => b.Id == id);

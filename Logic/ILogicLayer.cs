@@ -1,4 +1,5 @@
 ﻿using DataClient;
+using LogicClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;

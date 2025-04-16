@@ -1,4 +1,5 @@
 ﻿using DataClient;
+using LogicClient;
 
 namespace Logic
 {

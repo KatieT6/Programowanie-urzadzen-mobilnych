@@ -1,5 +1,5 @@
 ﻿using Data;
-using Logic;
+using LogicClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -5,6 +5,7 @@ using System.Text.Json;
 using Communication;
 using DataCommon;
 
+
 namespace Server;
 
 internal class Server : IServer, IObservable<IBook>

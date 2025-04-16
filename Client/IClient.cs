@@ -1,17 +1,22 @@
-﻿using DataCommon;
+﻿using Communication;
+using DataCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client
+namespace Client 
 {
-    public interface IClient: IObserver<IBook>
-    {
-        public event MessageReceivedHandler MessageReceived;
+    public interface IClient
+    { 
+        event EventHandler<Request> messageRecieved;
 
-        public delegate void MessageReceivedHandler(string message);
+        public static IClient CreateClient()
+        {
+            return new WSClient();
+        }
+
 
     }
 }

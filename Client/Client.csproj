@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Communication\Communication.csproj" />
     <ProjectReference Include="..\Data\DataClient.csproj" />
-    <ProjectReference Include="..\PresentationModel\PresentationModel.csproj" />
   </ItemGroup>
 
 </Project>

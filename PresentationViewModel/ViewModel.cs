@@ -141,17 +141,17 @@ namespace PresentationViewModel
                         {
                             Console.WriteLine($"Recieved: {entry}");
 
-                            if(request.Name == RequestTypes.LOAD_REPLY)
+                            if(request.Name == "LOAD_REPLY")
                             {
-                                LoadReply(request.Args);
+                                LoadReply(request.ArgsJson);
                             }
-                            else if(request.Name == RequestTypes.BORROW_REPLY)
+                            else if(request.Name == "BORROW_REPLY")
                             {
-                                BorrowReply(request.Args);
+                                BorrowReply(request.ArgsJson);
                             }
-                            else if(request.Name == RequestTypes.RETURN_REPLY)
+                            else if(request.Name == "RETURN_REPLY")
                             {
-                                ReturnReply(request.Args);
+                                ReturnReply(request.ArgsJson);
                             }
                             else
                             {
@@ -264,10 +264,10 @@ namespace PresentationViewModel
                 }
             }
 
-            new Thread(() =>
+            /*new Thread(() =>
             {
                 _ = ClientStart();
-            }).Start();
+            }).Start();*/
 
             _ = BookLoaderLoop();
 
@@ -286,7 +286,7 @@ namespace PresentationViewModel
                 Console.WriteLine("BorrowClickHandler");
                 lock (_outMessageQueueLock)
                 {
-                    Request request = new Request(RequestTypes.BORROW, new List<string>() { selectedBook.Id.ToString()});
+                    Request request = new Request("BORROW", JsonSerializer.Serialize(new List<string>() { selectedBook.Id.ToString()}));
                     _outMessageQueue.Enqueue(JsonSerializer.Serialize(request));
                 }
 
@@ -305,7 +305,7 @@ namespace PresentationViewModel
                 Console.WriteLine("ReturnClickHandler");
                 lock (_outMessageQueueLock)
                 {
-                    Request request = new Request(RequestTypes.RETURN, new List<string>() { selectedBook.Id.ToString() });
+                    Request request = new Request("BORROW", JsonSerializer.Serialize(new List<string>() { selectedBook.Id.ToString() }));
                     _outMessageQueue.Enqueue(JsonSerializer.Serialize(request));
                 }
                 
@@ -323,17 +323,19 @@ namespace PresentationViewModel
         {
             lock(_outMessageQueueLock)
             {
-                Request request = new Request(RequestTypes.LOAD, new List<string>());
+                Request request = new Request("LOAD", JsonSerializer.Serialize(new List<string>()));
                 _outMessageQueue.Enqueue(JsonSerializer.Serialize(request));
             }
         }
 
 
-        private void BorrowReply(List<string> args)
+        private void BorrowReply(string argsJson)
         {
-            var selectedBook = _modelAPI.Library.GetBookByID(Guid.Parse(args[0]));
+            var args = JsonSerializer.Deserialize<List<string>>(argsJson);
+            if (args == null || args.Count == 0) return;
 
-            if(selectedBook == null) return;
+            var selectedBook = _modelAPI.Library.GetBookByID(Guid.Parse(args[0]));
+            if (selectedBook == null) return;
 
             _borrowedBooks.Add(selectedBook);
 
@@ -341,22 +343,27 @@ namespace PresentationViewModel
             OnPropertyChanged(nameof(Books));
         }
 
-        private void ReturnReply(List<string> args)
+        private void ReturnReply(string argsJson)
         {
+            var args = JsonSerializer.Deserialize<List<string>>(argsJson);
+            if (args == null || args.Count == 0) return;
+
             var selectedBook = BorrowedBooks.FirstOrDefault(b => b.Id == Guid.Parse(args[0]));
             if (selectedBook == null) return;
+
             _borrowedBooks.Remove(selectedBook);
             OnPropertyChanged(nameof(BorrowedBooks));
             OnPropertyChanged(nameof(Books));
         }
 
-        private void LoadReply(List<string> args)
+        private void LoadReply(string argsJson)
         {
-            var arg = args[0];
+            var loadedBooks = JsonSerializer.Deserialize<List<ModelBook>>(argsJson);
+            /*var arg = args[0];
             Console.WriteLine(arg);
 
-            List<ModelBook>? loadedBooks = JsonSerializer.Deserialize<List<ModelBook>>(arg); ;
-            
+            List<ModelBook>? loadedBooks = JsonSerializer.Deserialize<List<ModelBook>>(arg);*/
+
             //Console.WriteLine($"loadedBooks == null {loadedBooks == null}"); 
 
             if (loadedBooks == null) return;

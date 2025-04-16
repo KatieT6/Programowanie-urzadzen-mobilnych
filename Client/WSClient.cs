@@ -1,5 +1,4 @@
-﻿
-using PresentationModel;
+﻿using Communication;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
@@ -9,31 +8,27 @@ using System.Text;
 
 namespace Client;
 
-public class WSClient
+public class WSClient : IClient
 {
     private string uri_;
     private ConcurrentQueue<string> messageQueue_;
     private SemaphoreSlim signal_;
-    private ModelLibrary library_;
-    private ObservableCollection<ModelBook> books_;
-    private ObservableCollection<ModelBook> borrowedBooks_;
-    public WSClient (string uri, ConcurrentQueue<string> queue, SemaphoreSlim signal, ModelLibrary library, ObservableCollection<ModelBook> books, ObservableCollection<ModelBook> borrowedBooks)
-    {
-        uri_ = uri;
-        messageQueue_ = queue;
-        signal_ = signal;
-        library_ = library;
-        books_ = books;
-        borrowedBooks_ = borrowedBooks;
-    }
+    private string _uri = "ws://localhost:5000/ws/";
+
+    public WSClient() { }
+
+
+    public event EventHandler<Request> messageRecieved;
+
+    public ClientWebSocket _webSocket;
 
     public async Task Start()
     {
-        using var socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri(uri_), CancellationToken.None);
+        _webSocket = new ClientWebSocket();
+        await _webSocket.ConnectAsync(new Uri(uri_), CancellationToken.None);
         Console.WriteLine("Connected to server.");
 
-        _ = ReceiveLoop(socket);
+        _ = ReceiveLoop();
 
         while (true)
         {
@@ -44,23 +39,25 @@ public class WSClient
                 {
                     Console.WriteLine($"Sending: {message}");
                     var buffer = Encoding.UTF8.GetBytes(message);
-                    await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+                    await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
                     await Task.Delay(10);
                 }
             }   
         }
 
-        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
+        await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
     }
 
-    private async Task ReceiveLoop(ClientWebSocket socket)
+    private async Task ReceiveLoop()
     {
         var buffer = new byte[1024];
-        while (socket.State == WebSocketState.Open)
+        while (_webSocket.State == WebSocketState.Open)
         {
-            var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
             Console.WriteLine($"Received: {msg}");
         }
     }
+
+    
 }

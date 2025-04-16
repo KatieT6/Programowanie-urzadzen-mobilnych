@@ -1,15 +1,16 @@
-﻿using Logic;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Net;
 using System.Text;
-using Data;
+using DataClient;
 using System.Text.Json;
 using Communication;
 using PresentationModel;
+using DataCommon;
+using LogicClient;
 namespace Server;
 
-internal class Server : IServer
+internal class Server : IServer, IObservable<IBook>
 {
     private ILogicLayer logicLayer;
     private ModelAPI modelAPI;
@@ -18,7 +19,7 @@ internal class Server : IServer
 
     private ConcurrentQueue<(WebSocket Socket, string Message)> queue_ = new();
 
-    private Queue<BookInit> publisherQueue = new();
+    private Queue<IBookInitData> publisherQueue = new();
 
     private SemaphoreSlim queueSignal_ = new(0);
 
@@ -59,14 +60,14 @@ internal class Server : IServer
         mapping.TryAdd(RequestTypes.RETURN, ReturnReply);
         mapping.TryAdd(RequestTypes.LOAD, LoadReply);
 
-        publisherQueue.Enqueue(new BookInit("The Great Gatsby", "F. Scott Fitzgerald", 1925, BookType.Romance));
-        publisherQueue.Enqueue(new BookInit("1984", "George Orwell", 1949, BookType.SciFi));
-        publisherQueue.Enqueue(new BookInit("The Hobbit", "J.R.R. Tolkien", 1937, BookType.Fantasy));
-        publisherQueue.Enqueue(new BookInit("Dune", "Frank Herbert", 1965, BookType.SciFi));
-        publisherQueue.Enqueue(new BookInit("Pride and Prejudice", "Jane Austen", 1813, BookType.Romance));
-        publisherQueue.Enqueue(new BookInit("The Catcher in the Rye", "J.D. Salinger", 1951, BookType.Mystery));
-        publisherQueue.Enqueue(new BookInit("The Lord of the Rings", "J.R.R. Tolkien", 1954, BookType.Fantasy));
-        publisherQueue.Enqueue(new BookInit("Brave New World", "Aldous Huxley", 1932, BookType.SciFi));
+        publisherQueue.Enqueue(new IBookInitData("The Great Gatsby", "F. Scott Fitzgerald", 1925, BookType.Romance));
+        publisherQueue.Enqueue(new IBookInitData("1984", "George Orwell", 1949, BookType.SciFi));
+        publisherQueue.Enqueue(new IBookInitData("The Hobbit", "J.R.R. Tolkien", 1937, BookType.Fantasy));
+        publisherQueue.Enqueue(new IBookInitData("Dune", "Frank Herbert", 1965, BookType.SciFi));
+        publisherQueue.Enqueue(new IBookInitData("Pride and Prejudice", "Jane Austen", 1813, BookType.Romance));
+        publisherQueue.Enqueue(new IBookInitData("The Catcher in the Rye", "J.D. Salinger", 1951, BookType.Mystery));
+        publisherQueue.Enqueue(new IBookInitData("The Lord of the Rings", "J.R.R. Tolkien", 1954, BookType.Fantasy));
+        publisherQueue.Enqueue(new IBookInitData("Brave New World", "Aldous Huxley", 1932, BookType.SciFi));
     }
 
     private Task SendToSingleClientAsync(WebSocket socket, string message)
@@ -280,5 +281,10 @@ internal class Server : IServer
     public void ReturnBook(Guid id)
     {
         logicLayer.LibraryLogic.ReturnBookByID(id);
+    }
+
+    public IDisposable Subscribe(IObserver<IBook> observer)
+    {
+        throw new NotImplementedException();
     }
 }

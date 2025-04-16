@@ -16,4 +16,9 @@ public interface IBook : INotifyPropertyChanged
     {
         return new Book(title, author, year, type, id, isAvailable);
     }
+
+    public static IBook CreateBook(string title, string author, int year, BookType type)
+    {
+        return new Book(title, author, year, type);
+    }
 }

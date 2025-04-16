@@ -1,4 +1,4 @@
-﻿using Logic;
+﻿using LogicClient;
 
 namespace LogicTest;
 

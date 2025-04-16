@@ -1,5 +1,6 @@
-﻿using Data;
-using Logic;
+﻿using DataClient;
+using DataCommon;
+using LogicClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Server;
 
-public interface IServer
+public interface IServer 
 {
     public static IServer CreateServer()
     {

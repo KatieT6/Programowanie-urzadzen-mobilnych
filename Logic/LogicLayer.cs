@@ -1,7 +1,6 @@
 ﻿using DataClient;
-using LogicClient;
 
-namespace Logic
+namespace LogicClient
 {
     internal class LogicLayer : ILogicLayer
     {
@@ -9,7 +8,7 @@ namespace Logic
 
         private IDataLayer DataLayer { get; }
 
-        public LogicLayer(IDataLayer data = default(IDataLayer))
+        public LogicLayer(IDataLayer data = default)
         {
             DataLayer = data;
             LibraryLogic = new LibraryLogic(DataLayer.Library);

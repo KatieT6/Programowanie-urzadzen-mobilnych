@@ -19,6 +19,7 @@ namespace Client
             return new WSClient();
         }
 
+        Task SendMessage(Request request);
         public void ClientLoop();
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 
 
 namespace Client;
@@ -61,6 +62,11 @@ public class WSClient : IClient
         await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
     }
 
+    public Task SendMessage(Request request)
+    {
+        var message = JsonSerializer.Serialize(request);
+        return SendMessageAsync(message);
+    }
     public async Task SendMessageAsync(string message)
     {
         var buffer = Encoding.UTF8.GetBytes(message);
@@ -75,6 +81,19 @@ public class WSClient : IClient
             var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
             Console.WriteLine($"Received: {msg}");
+
+            try
+            {
+                var request = JsonSerializer.Deserialize<Request>(msg);
+                if (request != null)
+                {
+                    messageRecieved?.Invoke(this, request);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to deserialize message: " + ex.Message);
+            }
         }
     }
 

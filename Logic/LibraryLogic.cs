@@ -22,6 +22,10 @@ namespace LogicClient
         {
             this.library = library;
             Client = client;
+            if (Client != null)
+            {
+                Client.messageRecieved += OnMessageReceived;
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -84,14 +88,9 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                if (book.IsAvailable)
-                {
-                    library.MarkBookAsUnavailable(book);
-                }
-                /*else
-                {
-                    throw new InvalidOperationException("Book is already lent out.");
-                }*/
+                var borrowRequest = new ReturnBorrowRequest(Client.ClientId, book.Id);
+                var request = new Request("BorrowBook", JsonSerializer.Serialize(borrowRequest));
+                Client.SendMessage(request);
             }
         }
 
@@ -99,17 +98,9 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
-                if (book != null)
-                {
-                    LendBook(book);
-
-                    OnPropertyChanged(nameof(book));
-                }
-                /*else
-                {
-                    throw new KeyNotFoundException("Book not found.");
-                }*/
+                 var borrowRequest = new ReturnBorrowRequest(Client.ClientId, id);
+                 var request = new Request("BorrowBook", JsonSerializer.Serialize(borrowRequest));
+                 Client.SendMessage(request);
             }
         }
 
@@ -117,20 +108,9 @@ namespace LogicClient
         {
             lock (_lock) 
             {
-                if (!book.IsAvailable)
-                {
-
-                    // Przygotowanie żądania do serwera
-                    var returnRequest = new ReturnBorrowRequest(Client.ClientId, book.Id);
-
-                    var request = new Request("ReturnBook", JsonSerializer.Serialize(returnRequest));
-
-                    /*Client.SendRequest(request);
-                    if (response.IsSuccess)
-                    {
-                        library.MarkBookAsAvailable(book);
-                    }*/
-                }
+                var returnRequest = new ReturnBorrowRequest(Client.ClientId, book.Id);
+                var request = new Request("ReturnBook", JsonSerializer.Serialize(returnRequest));
+                Client.SendMessage(request);
             }
         }
 
@@ -138,15 +118,9 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
-                if (book != null)
-                {
-                    ReturnBook(book);
-                }
-                else
-                {
-                    throw new KeyNotFoundException("Book not found.");
-                }
+                var returnRequest = new ReturnBorrowRequest(Client.ClientId, id);
+                var request = new Request("ReturnBook", JsonSerializer.Serialize(returnRequest));
+                Client.SendMessage(request);
             }
         }
 
@@ -154,5 +128,74 @@ namespace LogicClient
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        private void OnMessageReceived(object sender, Request request)
+        {
+            var response = JsonSerializer.Deserialize<ReturnBorrowResponseRequest>(request.ArgsJson);
+            if (response.Result == 1)
+            {
+                // oznacz książkę jako wypożyczoną
+            }
+            switch (request.Name)
+            {
+                case "BorrowBook":
+                    HandleBorrowBookRequest(request);
+                    break;
+                case "ReturnBook":
+                    HandleReturnBookRequest(request);
+                    break;
+                case "LoadRequest":
+                    HandleLoadRequest(request);
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void HandleBorrowBookRequest(Request request)
+        {
+            var borrowRequest = JsonSerializer.Deserialize<ReturnBorrowResponseRequest>(request.ArgsJson);
+            if (borrowRequest.Result == 1)
+            {
+                lock (_lock)
+                {
+                    var book = library.Shelf.FirstOrDefault(b => b.Id == borrowRequest.BookId);
+                    if (book != null && book.IsAvailable)
+                    {
+                        library.MarkBookAsUnavailable(book);
+                        OnPropertyChanged(nameof(book));
+                    }
+                }
+            }
+        }
+
+        private void HandleReturnBookRequest(Request request)
+        {
+            var returnRequest = JsonSerializer.Deserialize<ReturnBorrowRequest>(request.ArgsJson);
+            if (returnRequest != null)
+            {
+                lock (_lock)
+                {
+                    var book = library.Shelf.FirstOrDefault(b => b.Id == returnRequest.BookId);
+                    if (book != null && !book.IsAvailable)
+                    {
+                        library.MarkBookAsAvailable(book);
+                        OnPropertyChanged(nameof(book));
+                    }
+                }
+            }
+        }
+        private void HandleLoadRequest(Request request)
+        {
+            var books = JsonSerializer.Deserialize<List<IBookInitData>>(request.ArgsJson);
+            if (books != null)
+            {
+                lock (_lock)
+                {
+                    var bookList = books.Select(data => IBook.CreateBook(data)).ToList();
+                    library.AddBooks(bookList);
+                    OnPropertyChanged(nameof(library.Shelf));
+                }
+            }
+        }
+
     }
 }

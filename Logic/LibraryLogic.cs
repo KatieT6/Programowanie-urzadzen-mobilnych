@@ -28,7 +28,6 @@ namespace LogicClient
             if (Client != null)
             {
                 Client.messageRecieved += OnMessageReceived!;
-
             }
         }
 
@@ -124,6 +123,16 @@ namespace LogicClient
             {
                 var returnRequest = new ReturnBorrowRequest(Client.ClientId, id);
                 var request = new Request("ReturnBook", JsonSerializer.Serialize(returnRequest));
+                Client.SendMessage(request);
+            }
+        }
+
+        public void LoadRequest()
+        {
+            lock (_lock)
+            {
+                var loadRequest = new LoadRequest();
+                var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
                 Client.SendMessage(request);
             }
         }

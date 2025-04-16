@@ -14,4 +14,6 @@ public interface IServer
     {
         return new Server();
     }
+
+    public void StopServer();
 }

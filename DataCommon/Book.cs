@@ -18,6 +18,7 @@ public class Book : IBook
     public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
     public Guid Id { get => id; set => id = value; }
 
+    public Book() { }
     public Book(IBookInitData init)
     {
         Title = init.Title;

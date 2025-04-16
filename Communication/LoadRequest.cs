@@ -12,6 +12,11 @@ namespace Communication
             set { books = value; }
         }
 
+        public LoadRequest()
+        {
+            books = new List<Book>();
+        }
+
         public LoadRequest(List<Book> books)
         {
             this.books = books;

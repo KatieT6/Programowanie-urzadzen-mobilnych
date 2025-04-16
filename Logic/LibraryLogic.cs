@@ -182,16 +182,21 @@ namespace LogicClient
         }
         private void HandleLoadRequest(Request request)
         {
-            var books = JsonSerializer.Deserialize<List<IBookInitData>>(request.ArgsJson);
-            if (books != null)
+            
+            var loadRequest = JsonSerializer.Deserialize<LoadRequest>(request.ArgsJson);
+            if (loadRequest != null)
             {
                 lock (_lock)
                 {
-                    var bookList = books.Select(data => IBook.CreateBook(data)).ToList();
-                    library.AddBooks(bookList);
-                    OnPropertyChanged(nameof(library.Shelf));
+                    library.Shelf.Clear();
+                    foreach (var book in loadRequest.Books)
+                    {
+                        library.AddBook(IBook.CreateBook(book.Title, book.Author, book.Year, book.Type, book.Id, book.IsAvailable));
+                        
+                    }
                 }
             }
+            OnPropertyChanged(nameof(library.Shelf));
         }
 
     }

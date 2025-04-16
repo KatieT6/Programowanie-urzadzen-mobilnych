@@ -29,7 +29,11 @@ public class WSClient : IClient
     public void ClientLoop()
     {
         var clientLoopTask = Task.Run(() => Start());
-        var clientMSG = Task.Run( () =>SendMessageAsync("Wiadomość od klienta"));
+        var clientMSG = Task.Run( () =>
+        { 
+            Task.Delay(3000).Wait();
+            _ = SendMessageAsync("Wiadomość od klienta");
+        });
 
     }
     public async Task Start()

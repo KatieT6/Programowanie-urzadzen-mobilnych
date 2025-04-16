@@ -102,8 +102,16 @@ internal class Server : IServer, IObservable<IBook>
         
                 if (result.MessageType == WebSocketMessageType.Close) break;
                 var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-
-                Request request = JsonSerializer.Deserialize<Request>(msg);
+                Request request;
+                try
+                {
+                    request = JsonSerializer.Deserialize<Request>(msg);
+                }
+                catch
+                {
+                    Console.WriteLine($"Error deserializing message: {msg}");
+                    continue;
+                }
                 if (request == null) continue;
 
                 InvokeMessgeRecieved(this, request);
@@ -147,8 +155,10 @@ internal class Server : IServer, IObservable<IBook>
     {
         lock (clientsSocketsLock)
         {
+            Console.WriteLine($"Broadcasting to {clientsSockets.Count()}");
             foreach (var clientId in clientsSockets.Keys)
             {
+                Console.WriteLine($"Broadcasting to {clientId.ToString()}");
                 SendMessage(clientId, request);
             }
         }

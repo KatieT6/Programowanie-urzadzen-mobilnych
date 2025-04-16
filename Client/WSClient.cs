@@ -10,21 +10,30 @@ namespace Client;
 
 public class WSClient : IClient
 {
-    private string uri_;
     private ConcurrentQueue<string> messageQueue_;
     private SemaphoreSlim signal_;
-    private string _uri = "ws://localhost:5000/ws/";
+    private string uri_ = "ws://localhost:5000/ws/";
+    public Guid ClientId { get; set; }
 
-    public WSClient() { }
-
+    public WSClient() 
+    {
+        _webSocket = new ClientWebSocket();
+        ClientId = new Guid(); 
+    }
 
     public event EventHandler<Request> messageRecieved;
 
     public ClientWebSocket _webSocket;
 
+
+    public void ClientLoop()
+    {
+        var clientLoopTask = Task.Run(() => Start());
+        var clientMSG = Task.Run( () =>SendMessageAsync("Wiadomość od klienta"));
+
+    }
     public async Task Start()
     {
-        _webSocket = new ClientWebSocket();
         await _webSocket.ConnectAsync(new Uri(uri_), CancellationToken.None);
         Console.WriteLine("Connected to server.");
 
@@ -42,10 +51,16 @@ public class WSClient : IClient
                     await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
                     await Task.Delay(10);
                 }
-            }   
+            }
         }
 
         await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
+    }
+
+    public async Task SendMessageAsync(string message)
+    {
+        var buffer = Encoding.UTF8.GetBytes(message);
+        await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
     private async Task ReceiveLoop()

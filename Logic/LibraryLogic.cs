@@ -7,6 +7,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Client;
+using Communication;
+using System.Text.Json;
 
 namespace LogicClient
 {
@@ -14,9 +17,11 @@ namespace LogicClient
     {
         private readonly object _lock = new object();
         private IDatabase library;
-        public LibraryLogic(IDatabase library = default)
+        private IClient Client;
+        public LibraryLogic(IDatabase library, IClient client = default)
         {
             this.library = library;
+            Client = client;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -114,12 +119,17 @@ namespace LogicClient
             {
                 if (!book.IsAvailable)
                 {
-                    library.MarkBookAsAvailable(book);
-                    OnPropertyChanged(nameof(book));
-                }
-                else
-                {
-                    throw new InvalidOperationException("Book is already returned.");
+
+                    // Przygotowanie żądania do serwera
+                    var returnRequest = new ReturnBorrowRequest(Client.ClientId, book.Id);
+
+                    var request = new Request("ReturnBook", JsonSerializer.Serialize(returnRequest));
+
+                    /*Client.SendRequest(request);
+                    if (response.IsSuccess)
+                    {
+                        library.MarkBookAsAvailable(book);
+                    }*/
                 }
             }
         }

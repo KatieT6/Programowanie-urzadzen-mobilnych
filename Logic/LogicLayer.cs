@@ -14,13 +14,14 @@ namespace LogicClient
         public LogicLayer(IDataLayer data = default)
         {
             DataLayer = data;
-            LibraryLogic = new LibraryLogic(DataLayer.Library);
             Client = IClient.CreateClient();
+            LibraryLogic = new LibraryLogic(DataLayer.Library, Client);
         }
 
         public void ClientLoop()
         {
-            throw new NotImplementedException();
+            if (Client == null) return;
+            Client.ClientLoop();
         }
     }
 }

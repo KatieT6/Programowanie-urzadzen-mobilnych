@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 namespace Client 
 {
     public interface IClient
-    { 
+    {
+        Guid ClientId { get; }
+
         event EventHandler<Request> messageRecieved;
 
         public static IClient CreateClient()
@@ -17,6 +19,6 @@ namespace Client
             return new WSClient();
         }
 
-
+        public void ClientLoop();
     }
 }

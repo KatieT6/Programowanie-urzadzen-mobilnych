@@ -29,6 +29,7 @@ namespace PresentationModel
         public ModelAPI(ILogicLayer logic)
         {
             _logicLayer = logic;
+            _logicLayer.ClientLoop();
         }
     }
 }

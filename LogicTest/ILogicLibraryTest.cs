@@ -1,4 +1,4 @@
-using Data;
+using DataCommon;
 using LogicClient;
 
 namespace LogicTest;

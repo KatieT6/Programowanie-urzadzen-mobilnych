@@ -1,5 +1,6 @@
-﻿using Data;
-using Logic;
+﻿using DataClient;
+using DataCommon;
+using LogicClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

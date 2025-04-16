@@ -2,7 +2,7 @@
 
 namespace Server;
 
-public interface IServer
+public interface IServer 
 {
     event EventHandler<Request> messageRecieved;
     public void ServerLoop();

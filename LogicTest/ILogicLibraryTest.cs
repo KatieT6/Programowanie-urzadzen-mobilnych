@@ -1,5 +1,5 @@
 using Data;
-using Logic;
+using LogicClient;
 
 namespace LogicTest;
 

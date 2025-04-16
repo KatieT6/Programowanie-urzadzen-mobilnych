@@ -39,5 +39,15 @@ public class Book : IBook
         IsAvailable = isAvailable;
     }
 
+    public Book(string title, string author, int year, BookType type)
+    {
+        Title = title;
+        Author = author;
+        Year = year;
+        Type = type;
+        Id = Guid.NewGuid();
+        IsAvailable = true;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 }

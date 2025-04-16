@@ -7,7 +7,7 @@ using Communication;
 
 namespace Server;
 
-internal class Server : IServer
+internal class Server : IServer, IObservable<IBook>
 {
     private HttpListener listener = new();
     private string prefix = "http://localhost:5000/ws/";
@@ -168,5 +168,10 @@ internal class Server : IServer
         }
 
         return Task.CompletedTask;
+    }
+
+    public IDisposable Subscribe(IObserver<IBook> observer)
+    {
+        throw new NotImplementedException();
     }
 }

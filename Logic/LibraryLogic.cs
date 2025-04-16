@@ -1,4 +1,5 @@
 ﻿using DataClient;
+using DataCommon;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic
+namespace LogicClient
 {
     public class LibraryLogic : ILibraryLogic
     {

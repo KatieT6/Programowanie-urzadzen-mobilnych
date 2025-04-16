@@ -15,7 +15,8 @@ using Communication;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Collections;
-using Data;
+using DataClient;
+using DataCommon;
 
 namespace PresentationViewModel
 {

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using PresentationViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,13 @@ namespace PresentationView
         public MainWindow()
         {
             InitializeComponent();
+
+            // Retrieve the ViewModel from the DataContext
+            if (DataContext is ViewModel viewModel)
+            {
+                viewModel._syncContext = SynchronizationContext.Current;
+            }
+
         }
     }
 }

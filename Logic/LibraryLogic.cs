@@ -18,9 +18,12 @@ namespace LogicClient
         private readonly object _lock = new object();
         private IDatabase library;
         private IClient Client;
+
+        public IDatabase Library { get => library; set => library = value; }
+
         public LibraryLogic(IDatabase library, IClient client = default)
         {
-            this.library = library;
+            this.Library = library;
             Client = client;
             if (Client != null)
             {
@@ -33,7 +36,7 @@ namespace LogicClient
 
         public void AddBook(IBook book)
         {
-            library.AddBook(book);
+            Library.AddBook(book);
             OnPropertyChanged(nameof(book));
         }
 
@@ -41,7 +44,7 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                library.Shelf.Clear();
+                Library.Shelf.Clear();
             }
         }
 
@@ -49,7 +52,7 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                return library.Shelf;
+                return Library.Shelf;
             }
         }
 
@@ -57,7 +60,7 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                var book = library.Shelf.FirstOrDefault(b => b.Id == id);
+                var book = Library.Shelf.FirstOrDefault(b => b.Id == id);
                 if (book != null)
                 {
                     return book;
@@ -73,7 +76,7 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                return library.GetBooksByID(ids);
+                return Library.GetBooksByID(ids);
             }
         }
 
@@ -81,7 +84,7 @@ namespace LogicClient
         {
             lock (_lock)
             {
-                return library.GetBooksByType(type);
+                return Library.GetBooksByType(type);
             }
         }
 
@@ -154,10 +157,10 @@ namespace LogicClient
             {
                 lock (_lock)
                 {
-                    var book = library.Shelf.FirstOrDefault(b => b.Id == borrowRequest.BookId);
+                    var book = Library.Shelf.FirstOrDefault(b => b.Id == borrowRequest.BookId);
                     if (book != null && book.IsAvailable)
                     {
-                        library.MarkBookAsUnavailable(book);
+                        Library.MarkBookAsUnavailable(book);
                         OnPropertyChanged(nameof(book));
                     }
                 }
@@ -171,10 +174,10 @@ namespace LogicClient
             {
                 lock (_lock)
                 {
-                    var book = library.Shelf.FirstOrDefault(b => b.Id == returnRequest.BookId);
+                    var book = Library.Shelf.FirstOrDefault(b => b.Id == returnRequest.BookId);
                     if (book != null && !book.IsAvailable)
                     {
-                        library.MarkBookAsAvailable(book);
+                        Library.MarkBookAsAvailable(book);
                         OnPropertyChanged(nameof(book));
                     }
                 }
@@ -188,15 +191,15 @@ namespace LogicClient
             {
                 lock (_lock)
                 {
-                    library.Shelf.Clear();
+                    Library.Shelf.Clear();
                     foreach (var book in loadRequest.Books)
                     {
-                        library.AddBook(IBook.CreateBook(book.Title, book.Author, book.Year, book.Type, book.Id, book.IsAvailable));
+                        Library.AddBook(IBook.CreateBook(book.Title, book.Author, book.Year, book.Type, book.Id, book.IsAvailable));
                         
                     }
                 }
             }
-            OnPropertyChanged(nameof(library.Shelf));
+            OnPropertyChanged(nameof(Library));
         }
 
     }

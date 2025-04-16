@@ -11,5 +11,4 @@
     <ProjectReference Include="..\Communication\Communication.csproj" />
     <ProjectReference Include="..\PresentationModel\PresentationModel.csproj" />
   </ItemGroup>
-
 </Project>

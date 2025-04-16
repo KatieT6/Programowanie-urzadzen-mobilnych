@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Input;
 
 
@@ -17,18 +17,25 @@ using System.Text.Json;
 using System.Collections;
 using DataClient;
 using DataCommon;
+using System.Windows;
+using System.Reflection;
+using System.Data.Common;
 
 namespace PresentationViewModel
 {
     public class ViewModel : ViewModelBase
     {
+        public SynchronizationContext _syncContext;
+        public bool updated = true;
         public ViewModel()
         {
+
             _modelAPI = ModelAbstractApi.CreateModelAPI();
             _library = _modelAPI.Library;
 
             _books = new ObservableCollection<ModelBook>();
             _borrowedBooks = new ObservableCollection<ModelBook>();
+
 
             _bookTypes = new ObservableCollection<string> { "All" };
             foreach (var type in Enum.GetValues(typeof(BookType)))
@@ -38,6 +45,32 @@ namespace PresentationViewModel
                     _bookTypes.Add(type.ToString());
                 }
             }
+
+
+
+            _library.PropertyChanged += (s, e) =>
+            {
+                updated = false;
+                if (e.PropertyName == nameof(ModelLibrary.Books))
+                {
+                    _syncContext.Post(_ =>
+                    {
+                        if(!updated)
+                        {
+                            _books.Clear();
+                            foreach (ModelBook book in _library.GetBooks())
+                            {
+                                _books.Add(book);
+                            }
+
+                            Console.WriteLine("Library books changed");
+                            updated = true;
+                        }
+                        
+                    }, null);
+                    
+                }
+            };
 
             BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
             ReturnClick = new RelayCommand(param => ReturnClickHandler(param as ModelBook));
@@ -80,10 +113,12 @@ namespace PresentationViewModel
             {
                 _books.Add(book);
             }
+
         }
 
 
         #region private
+
         private readonly ModelAbstractApi _modelAPI;
         private ModelLibrary _library;
 

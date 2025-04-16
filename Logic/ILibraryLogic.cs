@@ -11,6 +11,8 @@ namespace LogicClient
 {
     public interface ILibraryLogic : INotifyPropertyChanged
     {
+        public IDatabase Library { get; set; }
+
         public void Clear();
         public void AddBook(IBook book);
         public void LendBook(IBook book);

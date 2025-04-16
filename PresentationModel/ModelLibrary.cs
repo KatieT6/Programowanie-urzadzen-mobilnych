@@ -9,17 +9,35 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace PresentationModel
 {
     public class ModelLibrary : INotifyPropertyChanged
     {
         private ILibraryLogic _libraryLogic;
+        public object booksLock = new();
+
         public ObservableCollection<ModelBook> Books { get; set; }
+
+ 
         public ModelLibrary(ILibraryLogic library)
         {
             _libraryLogic = library;
-            Books = new ObservableCollection<ModelBook>();
+            Books = new ObservableCollection<ModelBook>(); 
+            
+
+            _libraryLogic.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(ILibraryLogic.Library))
+                {
+                    Console.WriteLine("Library books changed");
+                    lock (booksLock)
+                    {
+                        LoadBooks();
+                    }
+                }
+            };
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -72,6 +90,7 @@ namespace PresentationModel
         {
             Guid id = book.Id;
             _libraryLogic.LendBook(_libraryLogic.GetBookByID(id));
+
             foreach (ModelBook b in Books)
             {
                 if (b.IsAvailable)
@@ -85,19 +104,27 @@ namespace PresentationModel
         public void LoadBooks()
         {
             var books = _libraryLogic.GetAllBooks();
-            Books.Clear();
-            foreach (var book in books)
-            {
-                Books.Add(new ModelBook(
-                    book.Title,
-                    book.Author,
-                    book.Year,
-                    book.Type.ToString(),
-                    book.Id,
-                    book.IsAvailable)
-                    );
-            }
 
+            lock(booksLock)
+            {
+
+                Books.Clear();
+
+
+                foreach (var book in books)
+                {
+                    Books.Add(new ModelBook(
+                        book.Title,
+                        book.Author,
+                        book.Year,
+                        book.Type.ToString(),
+                        book.Id,
+                        book.IsAvailable)
+                        );
+                }
+
+            }
+            
             OnPropertyChanged(nameof(Books));
         }
 

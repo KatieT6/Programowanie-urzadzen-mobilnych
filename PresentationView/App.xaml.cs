@@ -9,6 +9,7 @@ namespace PresentationView
     /// </summary>
     public partial class App : Application
     {
+        
     }
 
 }

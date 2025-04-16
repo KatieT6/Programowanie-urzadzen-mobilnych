@@ -174,7 +174,7 @@ namespace LogicServer
             {
                 while (true)
                 {   
-                    Thread.Sleep(10000);
+                    Thread.Sleep(5000);
                     var bookInitData = publisher.GetNewBook();
                     dataLayer.Database.AddBook(IBook.CreateBook(bookInitData));
                     BroadcastLoad();

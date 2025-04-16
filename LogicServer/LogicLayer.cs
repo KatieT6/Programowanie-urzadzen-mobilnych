@@ -12,6 +12,7 @@ namespace LogicServer
         private object subscribersLock = new object();
         private IDataLayer dataLayer;
         private IServer server;
+        private IPublisher publisher;
 
         public IDataLayer DataLayer => dataLayer;
         public IServer Server => server;
@@ -20,7 +21,18 @@ namespace LogicServer
         {
             dataLayer = IDataLayer.CreateDataLayer();
             server = IServer.CreateServer();
+            publisher = IPublisher.CreatePublisher();
             server.messageRecieved += OnMessageReceived!;
+        }
+
+        private void BroadcastLoad()
+        {
+            List<IBook> books = new List<IBook>();
+            dataLayer.Database.GetAllBooks(in books);
+            var loadRequest = new LoadRequest(books);
+            var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
+
+            BroadcastMessage(request);
         }
 
         private void SendLoadRequest(Guid clientID)
@@ -30,6 +42,11 @@ namespace LogicServer
             var loadRequest = new LoadRequest(books);
             var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
             server.SendMessage(clientID, request);
+        }
+
+        private void BroadcastMessage(Request request)
+        {
+            server.BroadcastMessage(request);
         }
 
         private void SendBorrowResponse(Guid cliendID, Guid bookId, int result)
@@ -73,6 +90,7 @@ namespace LogicServer
             if (result)
             {
                 SendBorrowResponse(clientId, bookId, 1);
+                BroadcastLoad();
             }
             else
             {
@@ -91,6 +109,7 @@ namespace LogicServer
             if (result)
             {
                 SendReturnResponse(clientId, bookId, 1);
+                BroadcastLoad();
             }
             else
             {
@@ -124,12 +143,11 @@ namespace LogicServer
                 case "NewClientRequest":
                     HandleNewClientRequest(msg.ArgsJson);
                     break;
-                case "GetDataRequest":
+                case "DelClientRequest":
                     HandleDelClientRequest(msg.ArgsJson);
                     break;
                 case "BorrowBook":
                     HandleBorrowBookRequest(msg.ArgsJson);
-                    // Handle borrow book request
                     break;
                 case "ReturnBook":
                     HandleReturnBookRequest(msg.ArgsJson);
@@ -145,6 +163,18 @@ namespace LogicServer
         public void ServerLoop()
         {
             if (server == null) return;
+
+            _ = Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(10000);
+                    var bookInitData = publisher.GetNewBook();
+                    dataLayer.Database.AddBook(IBook.CreateBook(bookInitData));
+                    BroadcastLoad();
+                }
+            });
+
             server.ServerLoop();
         }
     }

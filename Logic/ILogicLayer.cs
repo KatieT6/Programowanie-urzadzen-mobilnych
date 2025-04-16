@@ -16,6 +16,8 @@ namespace LogicClient
 
         public IClient Client { get; } 
 
+        public void ClientLoop();
+
         public static ILogicLayer CreateLogicLayer(IDataLayer? data = null)
         {
             return new LogicLayer(data ?? IDataLayer.CreateDataLayer());

@@ -2,15 +2,15 @@
 
 public class Request
 {
-    private RequestTypes name;
-    private List<string> args = new();
+    private string name;
+    private string argsJson;
 
-    public Request(RequestTypes name, List<string> args)
+    public Request(string name, string argsJson)
     {
         this.Name = name;
-        this.Args = args;
+        this.ArgsJson = argsJson;
     }
 
-    public RequestTypes Name { get => name; set => name = value; }
-    public List<string> Args { get => args; set => args = value; }
+    public string Name { get => name; set => name = value; }
+    public string ArgsJson { get => argsJson; set => argsJson = value; }
 }

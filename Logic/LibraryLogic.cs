@@ -24,7 +24,8 @@ namespace LogicClient
             Client = client;
             if (Client != null)
             {
-                Client.messageRecieved += OnMessageReceived;
+                Client.messageRecieved += OnMessageReceived!;
+
             }
         }
 
@@ -131,10 +132,6 @@ namespace LogicClient
         private void OnMessageReceived(object sender, Request request)
         {
             var response = JsonSerializer.Deserialize<ReturnBorrowResponseRequest>(request.ArgsJson);
-            if (response.Result == 1)
-            {
-                // oznacz książkę jako wypożyczoną
-            }
             switch (request.Name)
             {
                 case "BorrowBook":
@@ -153,7 +150,7 @@ namespace LogicClient
         private void HandleBorrowBookRequest(Request request)
         {
             var borrowRequest = JsonSerializer.Deserialize<ReturnBorrowResponseRequest>(request.ArgsJson);
-            if (borrowRequest.Result == 1)
+            if (borrowRequest != null && borrowRequest.Result == 1)
             {
                 lock (_lock)
                 {

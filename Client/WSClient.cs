@@ -11,8 +11,8 @@ namespace Client;
 
 public class WSClient : IClient
 {
-    private ConcurrentQueue<string> messageQueue_;
-    private SemaphoreSlim signal_;
+    private ConcurrentQueue<string> messageQueue_ = new ConcurrentQueue<string>();
+    private SemaphoreSlim signal_ = new SemaphoreSlim(0);
     private string uri_ = "ws://localhost:5000/ws/";
     public Guid ClientId { get; set; }
 

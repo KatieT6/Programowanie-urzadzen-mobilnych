@@ -185,4 +185,10 @@ internal class Server : IServer, IObservable<IBook>
     {
         throw new NotImplementedException();
     }
+
+    public void StopServer()
+    {
+        listener.Stop();
+        listener.Close();
+    }
 }

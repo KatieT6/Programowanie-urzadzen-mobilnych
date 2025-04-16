@@ -32,12 +32,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCommon", "DataCommon\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicServer", "LogicServer\LogicServer.csproj", "{76FD42CE-20A1-4733-AED5-8296859576FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationServer", "PresentationServer\PresentationServer.csproj", "{07DAD850-46FC-4037-9DCD-CB9727C9E5EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCE1F5B0-2C5E-49D2-89F5-3F48D70B492D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE1F5B0-2C5E-49D2-89F5-3F48D70B492D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE1F5B0-2C5E-49D2-89F5-3F48D70B492D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE1F5B0-2C5E-49D2-89F5-3F48D70B492D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2A8510A-3591-4764-BBDE-8ED83B6D74B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2A8510A-3591-4764-BBDE-8ED83B6D74B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2A8510A-3591-4764-BBDE-8ED83B6D74B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,6 +92,10 @@ Global
 		{76FD42CE-20A1-4733-AED5-8296859576FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76FD42CE-20A1-4733-AED5-8296859576FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76FD42CE-20A1-4733-AED5-8296859576FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07DAD850-46FC-4037-9DCD-CB9727C9E5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07DAD850-46FC-4037-9DCD-CB9727C9E5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07DAD850-46FC-4037-9DCD-CB9727C9E5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07DAD850-46FC-4037-9DCD-CB9727C9E5EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

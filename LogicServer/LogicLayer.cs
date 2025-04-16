@@ -16,7 +16,7 @@ namespace LogicServer
         public IDataLayer DataLayer => dataLayer;
         public IServer Server => server;
 
-        LogicLayer()
+        public LogicLayer()
         {
             dataLayer = IDataLayer.CreateDataLayer();
             server = IServer.CreateServer();

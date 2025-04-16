@@ -10,4 +10,9 @@ public interface ILogicLayer
     public IServer Server { get; }
     protected void OnMessageReceived(object sender, Request msg);
     public void ServerLoop();
+
+    public static ILogicLayer CreateLogicLayer()
+    {
+        return new LogicLayer();
+    }
 }

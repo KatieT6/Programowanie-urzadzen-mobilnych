@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataCommon\DataCommon.csproj" />
     <ProjectReference Include="..\DataServer\DataServer.csproj" />
+    <ProjectReference Include="..\Server\Server.csproj" />
   </ItemGroup>
 
 </Project>

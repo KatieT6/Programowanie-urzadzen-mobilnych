@@ -1,11 +1,13 @@
-﻿using DataServer;
+﻿using Communication;
+using DataServer;
+using Server;
 
 namespace LogicServer;
 
-public class ILogicLayer
+public interface ILogicLayer
 {
-    public IDataLayer dataLayer { get; }
-    public IWebsocketServer server { get; }
-
-    // Ne
+    public IDataLayer DataLayer { get; }
+    public IServer Server { get; }
+    protected void OnMessageReceived(object sender, Request msg);
+    public void ServerLoop();
 }

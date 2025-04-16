@@ -1,4 +1,5 @@
 ﻿
+using Data;
 using PresentationModel;
 using System;
 using System.Collections.Concurrent;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace Client;
 
-public class WSClient
+public class WSClient : IObserver<IBook>
 {
     private string uri_;
     private ConcurrentQueue<string> messageQueue_;
@@ -17,6 +18,9 @@ public class WSClient
     private ModelLibrary library_;
     private ObservableCollection<ModelBook> books_;
     private ObservableCollection<ModelBook> borrowedBooks_;
+
+    private IDisposable? unsubscriber_;
+
     public WSClient (string uri, ConcurrentQueue<string> queue, SemaphoreSlim signal, ModelLibrary library, ObservableCollection<ModelBook> books, ObservableCollection<ModelBook> borrowedBooks)
     {
         uri_ = uri;
@@ -25,6 +29,33 @@ public class WSClient
         library_ = library;
         books_ = books;
         borrowedBooks_ = borrowedBooks;
+    }
+    public void Subscribe(IObservable<IBook> provider)
+    {
+        if (provider != null)
+        {
+            unsubscriber_ = provider.Subscribe(this);
+        }
+    }
+
+    public void OnCompleted()
+    {
+        Console.WriteLine("No more books to receive.");
+    }
+
+    public void OnError(Exception error)
+    {
+        Console.WriteLine($"Error: {error.Message}");
+    }
+
+    public void OnNext(IBook value)
+    {
+        Console.WriteLine($"Received book: {value.Title} by {value.Author}");
+    }
+
+    public void Unsubscribe()
+    {
+        unsubscriber_?.Dispose();
     }
 
     public async Task Start()

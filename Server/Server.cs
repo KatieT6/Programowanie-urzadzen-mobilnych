@@ -9,7 +9,7 @@ using Communication;
 using PresentationModel;
 namespace Server;
 
-internal class Server : IServer
+internal class Server : IServer, IObservable<IBook>
 {
     private ILogicLayer logicLayer;
     private ModelAPI modelAPI;
@@ -25,6 +25,9 @@ internal class Server : IServer
     private ConcurrentDictionary<RequestTypes, Func<WebSocket, List<string>, Task>> mapping = new();
 
     private SemaphoreSlim mappingSignal_ = new(0);
+
+    private List<IObserver<IBook>> observers_ = new();
+
 
     public Server() 
     {
@@ -185,7 +188,9 @@ internal class Server : IServer
             if (publisherQueue.Count > 0)
             {
                 var bookInit = publisherQueue.Dequeue();
-                logicLayer.LibraryLogic.AddBook(IBook.CreateBook(bookInit));
+                var book = IBook.CreateBook(bookInit);
+                logicLayer.LibraryLogic.AddBook(book);
+                NotifySubscribers(book);
                 var message = $"New book added: {bookInit.title} by {bookInit.author} ({bookInit.year})";
                 foreach (var client in clients_.Values)
                 {
@@ -194,11 +199,6 @@ internal class Server : IServer
                         await LoadReply(client, new());
                     }
                 }
-                Console.WriteLine(message);
-            }
-            else
-            {
-                Console.WriteLine("No new books to publish.");
             }
         }
     }
@@ -280,5 +280,45 @@ internal class Server : IServer
     public void ReturnBook(Guid id)
     {
         logicLayer.LibraryLogic.ReturnBookByID(id);
+    }
+
+    public IDisposable Subscribe(IObserver<IBook> observer)
+    {
+
+        if (!observers_.Contains(observer))
+        {
+            observers_.Add(observer);
+        }
+
+        return new Unsubscriber(observers_, observer);
+    }
+
+    private void NotifySubscribers(IBook book)
+    {
+        foreach (var observer in observers_)
+        {
+            observer.OnNext(book);
+        }
+    }
+
+
+    private class Unsubscriber : IDisposable
+    {
+        private List<IObserver<IBook>> _observers;
+        private IObserver<IBook> _observer;
+
+        public Unsubscriber(List<IObserver<IBook>> observers, IObserver<IBook> observer)
+        {
+            _observers = observers;
+            _observer = observer;
+        }
+
+        public void Dispose()
+        {
+            if (_observers.Contains(_observer))
+            {
+                _observers.Remove(_observer);
+            }
+        }
     }
 }

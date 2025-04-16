@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
-    <ProjectReference Include="..\PresentationModel\PresentationModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,26 +1,20 @@
 ﻿using Communication;
+using DataCommon;
 using DataServer;
 using Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace LogicServer
 {
     internal class LogicLayer : ILogicLayer
     {
-        IDataLayer dataLayer;
-        IServer server;
-
-        public IDataLayer DataLayer => dataLayer;
-
-        public IServer Server => server;
-
         private HashSet<Guid> subscribers = new();
         private object subscribersLock = new object();
+        private IDataLayer dataLayer;
+        private IServer server;
+
+        public IDataLayer DataLayer => dataLayer;
+        public IServer Server => server;
 
         LogicLayer()
         {
@@ -29,11 +23,36 @@ namespace LogicServer
             server.messageRecieved += OnMessageReceived!;
         }
 
+        private void SendLoadRequest(Guid clientID)
+        {
+            List<IBook> books = new List<IBook>();
+            dataLayer.Database.GetAllBooks(in books);
+            var loadRequest = new LoadRequest(books);
+            var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
+            server.SendMessage(clientID, request);
+        }
+
+        private void SendBorrowResponse(Guid cliendID, Guid bookId, int result)
+        {
+            var ackRequest = new ReturnBorrowResponseRequest(result, bookId);
+            var request = new Request("BorrowResponse", JsonSerializer.Serialize(ackRequest));
+            server.SendMessage(cliendID, request);
+        }
+
+        private void SendReturnResponse(Guid cliendID, Guid bookId, int result)
+        {
+            var ackRequest = new ReturnBorrowResponseRequest(result, bookId);
+            var request = new Request("ReturnResponse", JsonSerializer.Serialize(ackRequest));
+            server.SendMessage(cliendID, request);
+        }
+
         private void HandleNewClientRequest(string argsJson)
         {
             var args = JsonSerializer.Deserialize<NewClientRequest>(argsJson);
             if (args == null) return;
             var clientId = args.Id;
+
+            SendLoadRequest(clientId);
         }
 
         private void HandleDelClientRequest(string argsJson)
@@ -50,7 +69,15 @@ namespace LogicServer
             var clientId = args.ClientId;
             var bookId = args.BookId;
             bool result = dataLayer.Database.TryMarkAsUnavailable(bookId);
-            
+
+            if (result)
+            {
+                SendBorrowResponse(clientId, bookId, 1);
+            }
+            else
+            {
+                SendBorrowResponse(clientId, bookId, 0);
+            }
         }
 
         private void HandleReturnBookRequest(string argsJson)
@@ -60,6 +87,15 @@ namespace LogicServer
             var clientId = args.ClientId;
             var bookId = args.BookId;
             bool result = dataLayer.Database.TryMarkAsAvailable(bookId);
+
+            if (result)
+            {
+                SendReturnResponse(clientId, bookId, 1);
+            }
+            else
+            {
+                SendReturnResponse(clientId, bookId, 0);
+            }
         }
 
         private void HandleSubscribeRequest(string argsJson)

@@ -1,13 +1,8 @@
 ﻿namespace Communication;
 
-public class NewClientRequest
+public class NewClientRequest(Guid id)
 {
-    private Guid id;
-
-    public NewClientRequest(Guid id)
-    {
-        this.id = id;
-    }
+    private Guid id = id;
 
     public Guid Id
     {

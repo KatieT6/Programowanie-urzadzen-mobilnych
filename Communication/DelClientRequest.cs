@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace Communication
 {
-    public class DelClientRequest
+    public class DelClientRequest(Guid id)
     {
-        private Guid id;
-
-        public DelClientRequest(Guid id)
-        {
-            this.id = id;
-        }
+        private Guid id = id;
 
         public Guid Id
         {

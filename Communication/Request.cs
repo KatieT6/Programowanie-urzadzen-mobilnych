@@ -2,8 +2,8 @@
 
 public class Request
 {
-    private string name;
-    private string argsJson;
+    private string name = "";
+    private string argsJson = "";
 
     public Request(string name, string argsJson)
     {

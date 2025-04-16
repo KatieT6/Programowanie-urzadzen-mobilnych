@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace Communication;
 
-public class SubRequest
+public class SubRequest(Guid id)
 {
-    private Guid id;
-
-    public NewClientRequest(Guid id)
-    {
-        this.id = id;
-    }
+    private Guid id = id;
 
     public Guid Id
     {

@@ -2,7 +2,7 @@
 
 namespace DataCommon;
 
-internal class Book : IBook
+public class Book : IBook
 {
     private string title = "Default Title";
     private string author = "Author Title";

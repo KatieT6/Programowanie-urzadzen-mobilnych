@@ -1,13 +1,9 @@
-﻿using Logic;
-using System.Collections.Concurrent;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Net;
 using System.Text;
-using Data;
 using System.Text.Json;
 using Communication;
-using PresentationModel;
-using System.Net.Sockets;
+
 
 namespace Server;
 
@@ -48,7 +44,6 @@ internal class Server : IServer
             }
         }
     }
-
     private void RemoveClientSocketPair(Guid id, WebSocket socket)
     {
 
@@ -75,14 +70,12 @@ internal class Server : IServer
             messageRecieved?.Invoke(sender, msg);
         }
     }
-
     private void SendNewClientRequest(Guid clientId)
     {
         NewClientRequest newClientSubrequest = new NewClientRequest(clientId);
         Request newClientRequest = new Request("NewClient", JsonSerializer.Serialize(newClientSubrequest));
         InvokeMessgeRecieved(this, newClientRequest);
     }
-
     private void SendDelClientRequest(Guid clientId)
     {
         NewClientRequest delClientSubrequest = new NewClientRequest(clientId);
@@ -132,7 +125,6 @@ internal class Server : IServer
         var serverLoopTask = Task.Run(() => ServerLoopImplAsync());
         serverLoopTask.Wait();
     }
-
     private async Task ServerLoopImplAsync()
     {
         Console.WriteLine("Server loop started.");
@@ -150,15 +142,31 @@ internal class Server : IServer
         }
     }
 
+    public Task BroadcastMessage(Request request)
+    {
+        lock (clientsSocketsLock)
+        {
+            foreach (var clientId in clientsSockets.Keys)
+            {
+                SendMessage(clientId, request);
+            }
+        }
+        return Task.CompletedTask;
+    }
     public Task SendMessage(Guid clientId, Request request)
     {
         var message = JsonSerializer.Serialize(request);
         var buffer = Encoding.UTF8.GetBytes(message);
         var segment = new ArraySegment<byte>(buffer);
-        if (clientsSockets.TryGetValue(clientId, out var socket))
+
+        lock(clientsSocketsLock)
         {
-            return socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+            if (clientsSockets.TryGetValue(clientId, out var socket))
+            {
+                return socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
         }
+
         return Task.CompletedTask;
     }
 }

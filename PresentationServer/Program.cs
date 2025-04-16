@@ -1,4 +1,5 @@
-﻿using LogicServer;
+﻿using DataCommon;
+using LogicServer;
 
 public static class Program
 {

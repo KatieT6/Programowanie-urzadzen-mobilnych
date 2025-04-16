@@ -1,0 +1,272 @@
+[
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  },
+  {
+    "Title": "Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1951,
+    "Type": 0
+  },
+  {
+    "Title": "Foundation and Empire",
+    "Author": "Isaac Assimov",
+    "Year": 1952,
+    "Type": 0
+  },
+  {
+    "Title": "Second Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1953,
+    "Type": 0
+  },
+  {
+    "Title": "Dune",
+    "Author": "Frank Herbert",
+    "Year": 1963,
+    "Type": 0
+  },
+  {
+    "Title": "Dune Messiah",
+    "Author": "Frank Herbert",
+    "Year": 1969,
+    "Type": 0
+  },
+  {
+    "Title": "Children of Dune",
+    "Author": "Frank Herbert",
+    "Year": 1976,
+    "Type": 0
+  },
+  {
+    "Title": "The Gulag Archipelago",
+    "Author": "Aleksandr Solzhenitsyn",
+    "Year": 1973,
+    "Type": 7
+  },
+  {
+    "Title": "Crime and Punishment",
+    "Author": "Fyodor Dostoevsky",
+    "Year": 1866,
+    "Type": 5
+  },
+  {
+    "Title": "The Master and Margarita",
+    "Author": "Mikhail Bulgakov",
+    "Year": 1966,
+    "Type": 5
+  },
+  {
+    "Title": "Time Out of Joint",
+    "Author": "Philipe Dick",
+    "Year": 1959,
+    "Type": 5
+  },
+  {
+    "Title": "Solar Lottery",
+    "Author": "Philipe Dick",
+    "Year": 1955,
+    "Type": 0
+  },
+  {
+    "Title": "The Count of Monte Cristo",
+    "Author": "Alrexandre Dumas",
+    "Year": 1844,
+    "Type": 7
+  },
+  {
+    "Title": "Don Quixote",
+    "Author": "Miguel de Cervantes",
+    "Year": 1605,
+    "Type": 7
+  },
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  },
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  },
+  {
+    "Title": "Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1951,
+    "Type": 0
+  },
+  {
+    "Title": "Foundation and Empire",
+    "Author": "Isaac Assimov",
+    "Year": 1952,
+    "Type": 0
+  },
+  {
+    "Title": "Second Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1953,
+    "Type": 0
+  },
+  {
+    "Title": "Dune",
+    "Author": "Frank Herbert",
+    "Year": 1963,
+    "Type": 0
+  },
+  {
+    "Title": "Dune Messiah",
+    "Author": "Frank Herbert",
+    "Year": 1969,
+    "Type": 0
+  },
+  {
+    "Title": "Children of Dune",
+    "Author": "Frank Herbert",
+    "Year": 1976,
+    "Type": 0
+  },
+  {
+    "Title": "The Gulag Archipelago",
+    "Author": "Aleksandr Solzhenitsyn",
+    "Year": 1973,
+    "Type": 7
+  },
+  {
+    "Title": "Crime and Punishment",
+    "Author": "Fyodor Dostoevsky",
+    "Year": 1866,
+    "Type": 5
+  },
+  {
+    "Title": "The Master and Margarita",
+    "Author": "Mikhail Bulgakov",
+    "Year": 1966,
+    "Type": 5
+  },
+  {
+    "Title": "Time Out of Joint",
+    "Author": "Philipe Dick",
+    "Year": 1959,
+    "Type": 5
+  },
+  {
+    "Title": "Solar Lottery",
+    "Author": "Philipe Dick",
+    "Year": 1955,
+    "Type": 0
+  },
+  {
+    "Title": "The Count of Monte Cristo",
+    "Author": "Alrexandre Dumas",
+    "Year": 1844,
+    "Type": 7
+  },
+  {
+    "Title": "Don Quixote",
+    "Author": "Miguel de Cervantes",
+    "Year": 1605,
+    "Type": 7
+  },
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  },
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  },
+  {
+    "Title": "Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1951,
+    "Type": 0
+  },
+  {
+    "Title": "Foundation and Empire",
+    "Author": "Isaac Assimov",
+    "Year": 1952,
+    "Type": 0
+  },
+  {
+    "Title": "Second Foundation",
+    "Author": "Isaac Assimov",
+    "Year": 1953,
+    "Type": 0
+  },
+  {
+    "Title": "Dune",
+    "Author": "Frank Herbert",
+    "Year": 1963,
+    "Type": 0
+  },
+  {
+    "Title": "Dune Messiah",
+    "Author": "Frank Herbert",
+    "Year": 1969,
+    "Type": 0
+  },
+  {
+    "Title": "Children of Dune",
+    "Author": "Frank Herbert",
+    "Year": 1976,
+    "Type": 0
+  },
+  {
+    "Title": "The Gulag Archipelago",
+    "Author": "Aleksandr Solzhenitsyn",
+    "Year": 1973,
+    "Type": 7
+  },
+  {
+    "Title": "Crime and Punishment",
+    "Author": "Fyodor Dostoevsky",
+    "Year": 1866,
+    "Type": 5
+  },
+  {
+    "Title": "The Master and Margarita",
+    "Author": "Mikhail Bulgakov",
+    "Year": 1966,
+    "Type": 5
+  },
+  {
+    "Title": "Time Out of Joint",
+    "Author": "Philipe Dick",
+    "Year": 1959,
+    "Type": 5
+  },
+  {
+    "Title": "Solar Lottery",
+    "Author": "Philipe Dick",
+    "Year": 1955,
+    "Type": 0
+  },
+  {
+    "Title": "The Count of Monte Cristo",
+    "Author": "Alrexandre Dumas",
+    "Year": 1844,
+    "Type": 7
+  },
+  {
+    "Title": "Don Quixote",
+    "Author": "Miguel de Cervantes",
+    "Year": 1605,
+    "Type": 7
+  },
+  {
+    "Title": "The Communist Manifesto",
+    "Author": "Karl Marx",
+    "Year": 1848,
+    "Type": 1
+  }
+]

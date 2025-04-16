@@ -38,7 +38,7 @@ namespace PresentationViewModel
                     _bookTypes.Add(type.ToString());
                 }
             }
-
+            _library.LoadBooks();
             BorrowClick = new RelayCommand(param => BorrowClickHandler(param as ModelBook));
             ReturnClick = new RelayCommand(param => ReturnClickHandler(param as ModelBook));
         }

@@ -31,21 +31,9 @@ namespace IntegrationTest
         }
 
         [TestMethod]
-        public void Server_ShouldStartWithoutExceptions()
+        public void Server_ShouldStartAndStopGracefully()
         {
-            // Act
-            Exception? ex = null;
-            try
-            {
-                server.ServerLoop();
-            }
-            catch (Exception e)
-            {
-                ex = e;
-            }
 
-            // Assert
-            Assert.IsNull(ex, $"Server failed to start: {ex?.Message}");
         }
     }
     

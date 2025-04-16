@@ -1,5 +1,4 @@
-using Data;
-using System.Net.Mail;
+using DataCommon;
 
 namespace DataTest;
 
@@ -7,22 +6,10 @@ namespace DataTest;
 public sealed class IBookTest
 {
     [TestMethod]
-    public void IBookTest_ConstructorTest_Default()
+    public void IBookTest_ConstructorTest_InitStruct()
     {
-        var book = IBook.CreateBook();
-
-        // Assert
-        Assert.IsNotNull(book);
-        Assert.AreEqual(string.Empty, book.Title);
-        Assert.AreEqual(string.Empty, book.Author);
-        Assert.AreEqual(0, book.Year);
-        Assert.AreEqual(BookType.NonFiction, book.Type);
-    }
-
-    [TestMethod]
-    public void IBookTest_ConstructorTest_Arg()
-    {
-        var book = IBook.CreateBook("a", "b", 0, BookType.SciFi);
+        IBookInitData bookInitData = new IBookInitData("a", "b", 0, BookType.SciFi);
+        var book = IBook.CreateBook(bookInitData);
 
         // Assert
         Assert.IsNotNull(book);
@@ -33,15 +20,17 @@ public sealed class IBookTest
     }
 
     [TestMethod]
-    public void IBookTest_ConstructorTest_InitStruct()
+    public void IBookTest_ConstructorTest_Args()
     {
-        BookInit bookInit = new BookInit("a", "b", 1, BookType.Romance);
-        var book = IBook.CreateBook(bookInit);
+        Guid id = Guid.NewGuid();
+        var book = IBook.CreateBook("a", "b", 1, BookType.SciFi, id, false);
 
         Assert.IsNotNull(book);
         Assert.AreEqual("a", book.Title);
         Assert.AreEqual("b", book.Author);
         Assert.AreEqual(1, book.Year);
-        Assert.AreEqual(BookType.Romance, book.Type);
+        Assert.AreEqual(BookType.SciFi, book.Type);
+        Assert.AreEqual(book.Id, id);
+        Assert.AreEqual(book.IsAvailable, false);
     }
 }

@@ -1,4 +1,4 @@
-using Data;
+using DataServer;
 
 namespace DataTest;
 
@@ -11,6 +11,6 @@ public sealed class IDataLayerTest
         IDataLayer layer = IDataLayer.CreateDataLayer();
 
         Assert.IsNotNull(layer);
-        Assert.IsNotNull(layer.Library);
+        Assert.IsNotNull(layer.Database);
     }
 }

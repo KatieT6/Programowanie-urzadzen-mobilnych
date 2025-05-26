@@ -17,7 +17,6 @@ internal sealed class Database : IDatabase
             return database.Count;
         }
     }
-
     public void AddBook(IBook book)
     {
         lock (databaseLock)
@@ -29,7 +28,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public void AddBooks(List<IBook> books)
     {
         lock (databaseLock)
@@ -40,7 +38,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public void GetAllBooks(in List<IBook> books)
     {
         lock (databaseLock)
@@ -52,7 +49,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public IBook GetBookByID(Guid id)
     {
         lock (databaseLock)
@@ -67,7 +63,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public void RemoveBook(IBook book)
     {
         lock (databaseLock)
@@ -78,7 +73,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public void RemoveBooks(List<IBook> books)
     {
         lock (databaseLock)
@@ -89,7 +83,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public bool TryMarkAsAvailable(Guid id)
     {
         lock (databaseLock)
@@ -107,7 +100,6 @@ internal sealed class Database : IDatabase
             }
         }
     }
-
     public bool TryMarkAsUnavailable(Guid id)
     {
         lock (databaseLock)

@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Client.csproj" />
+    <ProjectReference Include="..\Client\ClientWS.csproj" />
     <ProjectReference Include="..\DataCommon\DataCommon.csproj" />
     <ProjectReference Include="..\DataServer\DataServer.csproj" />
     <ProjectReference Include="..\Logic\LogicClient.csproj" />
-    <ProjectReference Include="..\Server\Server.csproj" />
+    <ProjectReference Include="..\Server\ServerPresentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

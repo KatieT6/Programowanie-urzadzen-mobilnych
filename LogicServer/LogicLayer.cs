@@ -28,7 +28,7 @@ namespace LogicServer
         private void BroadcastLoad()
         {
             List<IBook> books = new List<IBook>();
-            dataLayer.Database.GetAllBooks(in books);
+            dataLayer.GetAllBooks(in books);
             var loadRequest = new LoadRequest(books);
             var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
 
@@ -38,7 +38,7 @@ namespace LogicServer
         private void SendLoadRequest(Guid clientID)
         {
             List<IBook> books = new List<IBook>();
-            dataLayer.Database.GetAllBooks(in books);
+            dataLayer.GetAllBooks(in books);
             var loadRequest = new LoadRequest(books);
             var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
             server.SendMessage(clientID, request);
@@ -88,7 +88,7 @@ namespace LogicServer
             if (args == null) return;
             var clientId = args.ClientId;
             var bookId = args.BookId;
-            bool result = dataLayer.Database.TryMarkAsUnavailable(bookId);
+            bool result = dataLayer.TryMarkAsUnavailable(bookId);
 
             if (result)
             {
@@ -108,7 +108,7 @@ namespace LogicServer
             if (args == null) return;
             var clientId = args.ClientId;
             var bookId = args.BookId;
-            bool result = dataLayer.Database.TryMarkAsAvailable(bookId);
+            bool result = dataLayer.TryMarkAsAvailable(bookId);
 
             if (result)
             {
@@ -176,7 +176,7 @@ namespace LogicServer
                 {   
                     Thread.Sleep(5000);
                     var bookInitData = publisher.GetNewBook();
-                    dataLayer.Database.AddBook(IBook.CreateBook(bookInitData));
+                    dataLayer.AddBook(IBook.CreateBook(bookInitData));
                     BroadcastLoad();
                 }
             });

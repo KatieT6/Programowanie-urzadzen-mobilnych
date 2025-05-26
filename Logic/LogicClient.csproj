@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Client.csproj" />
+    <ProjectReference Include="..\Client\ClientWS.csproj" />
     <ProjectReference Include="..\Data\DataClient.csproj" />
   </ItemGroup>
 

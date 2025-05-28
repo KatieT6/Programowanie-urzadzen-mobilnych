@@ -63,7 +63,7 @@ namespace PresentationViewModel
                                 _books.Add(book);
                             }
 
-                            Console.WriteLine("Library books changed");
+                            //Console.Writeline("Library books changed");
                             updated = true;
                         }
                         

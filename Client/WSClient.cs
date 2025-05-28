@@ -40,7 +40,7 @@ public class WSClient : IClient
     public async Task Start()
     {
         await _webSocket.ConnectAsync(new Uri(uri_), CancellationToken.None);
-        Console.WriteLine("Connected to server.");
+        //Console.Writeline("Connected to server.");
 
         _ = ReceiveLoop();
 
@@ -51,7 +51,7 @@ public class WSClient : IClient
                 await signal_.WaitAsync();
                 if (messageQueue_.TryDequeue(out var message))
                 {
-                    Console.WriteLine($"Sending: {message}");
+                    //Console.Writeline($"Sending: {message}");
                     var buffer = Encoding.UTF8.GetBytes(message);
                     await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
                     await Task.Delay(10);
@@ -80,7 +80,7 @@ public class WSClient : IClient
         {
             var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Console.WriteLine($"Received: {msg}");
+            //Console.Writeline($"Received: {msg}");
 
             try
             {
@@ -92,7 +92,7 @@ public class WSClient : IClient
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to deserialize message: " + ex.Message);
+                //Console.Writeline("Failed to deserialize message: " + ex.Message);
             }
         }
     }

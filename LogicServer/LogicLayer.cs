@@ -65,7 +65,7 @@ namespace LogicServer
 
         private void HandleNewClientRequest(string argsJson)
         {
-            Console.WriteLine(argsJson);
+            //Console.Writeline(argsJson);
             var args = JsonSerializer.Deserialize<NewClientRequest>(argsJson);
             if (args == null) return;
             var clientId = args.Id;
@@ -75,7 +75,7 @@ namespace LogicServer
 
         private void HandleDelClientRequest(string argsJson)
         {
-            Console.WriteLine(argsJson);
+            //Console.Writeline(argsJson);
             var args = JsonSerializer.Deserialize<NewClientRequest>(argsJson);
             if (args == null) return;
             var clientId = args.Id;
@@ -83,7 +83,7 @@ namespace LogicServer
 
         private void HandleBorrowBookRequest(string argsJson)
         {
-            Console.WriteLine(argsJson);
+            //Console.Writeline(argsJson);
             var args = JsonSerializer.Deserialize<ReturnBorrowRequest>(argsJson);
             if (args == null) return;
             var clientId = args.ClientId;
@@ -103,7 +103,7 @@ namespace LogicServer
 
         private void HandleReturnBookRequest(string argsJson)
         {
-            Console.WriteLine(argsJson);
+            //Console.Writeline(argsJson);
             var args = JsonSerializer.Deserialize<ReturnBorrowRequest>(argsJson);
             if (args == null) return;
             var clientId = args.ClientId;
@@ -123,7 +123,7 @@ namespace LogicServer
 
         private void HandleSubscribeRequest(string argsJson)
         {
-            Console.WriteLine(argsJson);
+            //Console.Writeline(argsJson);
             var args = JsonSerializer.Deserialize<SubRequest>(argsJson);
             if (args == null) return;
             var clientId = args.Id;
@@ -143,7 +143,7 @@ namespace LogicServer
 
         public void OnMessageReceived(object sender, Request msg)
         {
-            Console.WriteLine($"{msg.Name} {msg.ArgsJson}");
+            //Console.Writeline($"{msg.Name} {msg.ArgsJson}");
             switch (msg.Name)
             {
                 case "NewClient":
@@ -169,12 +169,14 @@ namespace LogicServer
         public void ServerLoop()
         {
             if (server == null) return;
+            var bookInitData = publisher.GetNewBook();
+            dataLayer.AddBook(IBook.CreateBook(bookInitData));
 
             _ = Task.Run(() =>
             {
                 while (true)
                 {   
-                    Thread.Sleep(5000);
+                    Thread.Sleep(10000);
                     var bookInitData = publisher.GetNewBook();
                     dataLayer.AddBook(IBook.CreateBook(bookInitData));
                     BroadcastLoad();

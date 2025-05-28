@@ -109,7 +109,7 @@ internal class Server : IServer, IObservable<IBook>
                 }
                 catch
                 {
-                    Console.WriteLine($"Error deserializing message: {msg}");
+                    //Console.Writeline($"Error deserializing message: {msg}");
                     continue;
                 }
                 if (request == null) continue;
@@ -125,7 +125,7 @@ internal class Server : IServer, IObservable<IBook>
 
             SendDelClientRequest(clientId);
 
-            //Console.WriteLine($"Client disconnected: {clientId}");
+            ////Console.Writeline($"Client disconnected: {clientId}");
         }
     }
 
@@ -136,7 +136,7 @@ internal class Server : IServer, IObservable<IBook>
     }
     private async Task ServerLoopImplAsync()
     {
-        Console.WriteLine("Server loop started.");
+        //Console.Writeline("Server loop started.");
         while (true)
         {
             var context = await listener.GetContextAsync();
@@ -155,10 +155,10 @@ internal class Server : IServer, IObservable<IBook>
     {
         lock (clientsSocketsLock)
         {
-            Console.WriteLine($"Broadcasting to {clientsSockets.Count()}");
+            //Console.Writeline($"Broadcasting to {clientsSockets.Count()}");
             foreach (var clientId in clientsSockets.Keys)
             {
-                Console.WriteLine($"Broadcasting to {clientId.ToString()}");
+                //Console.Writeline($"Broadcasting to {clientId.ToString()}");
                 SendMessage(clientId, request);
             }
         }

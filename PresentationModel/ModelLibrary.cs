@@ -31,7 +31,7 @@ namespace PresentationModel
             {
                 if (e.PropertyName == nameof(ILibraryLogic.Library))
                 {
-                    Console.WriteLine("Library books changed");
+                    //Console.Writeline("Library books changed");
                     lock (booksLock)
                     {
                         LoadBooks();

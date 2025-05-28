@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Communication\Communication.csproj" />
     <ProjectReference Include="..\LogicServer\LogicServer.csproj" />
   </ItemGroup>
 

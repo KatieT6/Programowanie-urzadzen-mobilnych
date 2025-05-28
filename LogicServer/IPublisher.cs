@@ -2,7 +2,7 @@
 
 namespace LogicServer;
 
-internal interface IPublisher
+public interface IPublisher
 {
     IBookInitData GetNewBook();
 

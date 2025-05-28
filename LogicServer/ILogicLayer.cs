@@ -11,8 +11,8 @@ public interface ILogicLayer
     protected void OnMessageReceived(object sender, Request msg);
     public void ServerLoop();
 
-    public static ILogicLayer CreateLogicLayer()
+    public static ILogicLayer CreateLogicLayer(IPublisher publisher)
     {
-        return new LogicLayer();
+        return new LogicLayer(publisher);
     }
 }

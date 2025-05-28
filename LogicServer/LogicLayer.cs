@@ -17,11 +17,11 @@ namespace LogicServer
         public IDataLayer DataLayer => dataLayer;
         public IServer Server => server;
 
-        public LogicLayer()
+        public LogicLayer(IPublisher publisher)
         {
             dataLayer = IDataLayer.CreateDataLayer();
             server = IServer.CreateServer();
-            publisher = IPublisher.CreatePublisher();
+            this.publisher = publisher;
             server.messageRecieved += OnMessageReceived!;
         }
 

@@ -6,6 +6,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
+using XMLXSDValidator;
 
 
 namespace Client;
@@ -17,7 +18,7 @@ public class WSClient : IClient
     private SemaphoreSlim signal_ = new SemaphoreSlim(0);
     private string uri_ = "ws://localhost:5000/ws/";
     public Guid ClientId { get => clientID; set { clientID = value; } }
-
+    XSDValidator xmlXSDValidator = new XSDValidator();
     public WSClient() 
     {
         _webSocket = new ClientWebSocket();
@@ -83,6 +84,9 @@ public class WSClient : IClient
             var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
             //Console.WriteLine($"Received: {msg}");
+
+            ;
+            Console.WriteLine($"Message validated: {xmlXSDValidator.Validate(msg, typeof(Request))}");
 
             try
             {

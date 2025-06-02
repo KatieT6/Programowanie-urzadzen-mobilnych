@@ -9,11 +9,14 @@ using System.Text.Json;
 
 namespace Client;
 
-public class WSClient : IClient
+public class WSClient : IClient, IObservable<Request>
 {
     private ConcurrentQueue<string> messageQueue_ = new ConcurrentQueue<string>();
     private SemaphoreSlim signal_ = new SemaphoreSlim(0);
     private string uri_ = "ws://localhost:5000/ws/";
+
+    private List<IObserver<Request>> observers = new();
+
     public Guid ClientId { get; set; }
 
     public WSClient() 
@@ -88,6 +91,8 @@ public class WSClient : IClient
                 if (request != null)
                 {
                     messageRecieved?.Invoke(this, request);
+                    foreach (var observer in observers)
+                        observer.OnNext(request);
                 }
             }
             catch (Exception ex)
@@ -97,5 +102,29 @@ public class WSClient : IClient
         }
     }
 
-    
+    public IDisposable Subscribe(IObserver<Request> observer)
+    {
+
+        if (!observers.Contains(observer))
+            observers.Add(observer);
+        return new Unsubscriber(observers, observer);
+    }
+
+    internal class Unsubscriber : IDisposable
+    {
+        private List<IObserver<Request>> _observers;
+        private IObserver<Request> _observer;
+
+        public Unsubscriber(List<IObserver<Request>> observers, IObserver<Request> observer)
+        {
+            _observers = observers;
+            _observer = observer;
+        }
+
+        public void Dispose()
+        {
+            if (_observer != null && _observers.Contains(_observer))
+                _observers.Remove(_observer);
+        }
+    }
 }

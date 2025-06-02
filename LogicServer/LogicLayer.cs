@@ -3,6 +3,8 @@ using DataCommon;
 using DataServer;
 using Server;
 using System.Text.Json;
+using System.Xml.Serialization;
+using XMLXSDValidator;
 
 namespace LogicServer
 {
@@ -13,7 +15,7 @@ namespace LogicServer
         private IDataLayer dataLayer;
         private IServer server;
         private IPublisher publisher;
-
+        private XSDValidator xsdValidator = new XSDValidator();
         public IDataLayer DataLayer => dataLayer;
         public IServer Server => server;
 
@@ -30,7 +32,16 @@ namespace LogicServer
             List<IBook> books = new List<IBook>();
             dataLayer.GetAllBooks(in books);
             var loadRequest = new LoadRequest(books);
-            var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
+
+            string xmlMessage = "";
+            var xmlSerializer = new XmlSerializer(typeof(LoadRequest));
+            using (var stringWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(stringWriter, loadRequest);
+                xmlMessage = stringWriter.ToString();
+            }
+
+            var request = new Request("LoadRequest", xmlMessage);
 
             BroadcastMessage(request);
         }
@@ -40,7 +51,16 @@ namespace LogicServer
             List<IBook> books = new List<IBook>();
             dataLayer.GetAllBooks(in books);
             var loadRequest = new LoadRequest(books);
-            var request = new Request("LoadRequest", JsonSerializer.Serialize(loadRequest));
+            
+            string xmlMessage = "";
+            var xmlSerializer = new XmlSerializer(typeof(LoadRequest));
+            using (var stringWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(stringWriter, loadRequest);
+                xmlMessage = stringWriter.ToString();
+            }
+
+            var request = new Request("LoadRequest", xmlMessage);
             server.SendMessage(clientID, request);
         }
 
@@ -52,42 +72,87 @@ namespace LogicServer
         private void SendBorrowResponse(Guid cliendID, Guid bookId, int result)
         {
             var ackRequest = new ReturnBorrowResponseRequest(result, bookId);
-            var request = new Request("BorrowResponse", JsonSerializer.Serialize(ackRequest));
+
+            string xmlMessage = "";
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof(ReturnBorrowResponseRequest));
+                using (var stringWriter = new StringWriter())
+                {
+                    xmlSerializer.Serialize(stringWriter, ackRequest);
+                    xmlMessage = stringWriter.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating XML serializer: {ex.Message}");
+                return;
+            }
+            
+
+            var request = new Request("BorrowResponse", xmlMessage);
             server.SendMessage(cliendID, request);
         }
-
         private void SendReturnResponse(Guid cliendID, Guid bookId, int result)
         {
             var ackRequest = new ReturnBorrowResponseRequest(result, bookId);
-            var request = new Request("ReturnResponse", JsonSerializer.Serialize(ackRequest));
+
+            string xmlMessage = "";
+            var xmlSerializer = new XmlSerializer(typeof(ReturnBorrowResponseRequest));
+            using (var stringWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(stringWriter, ackRequest);
+                xmlMessage = stringWriter.ToString();
+            }
+
+            var request = new Request("ReturnResponse", xmlMessage);
             server.SendMessage(cliendID, request);
         }
 
-        private void HandleNewClientRequest(string argsJson)
+        private void HandleNewClientRequest(string argsXml)
         {
-            //Console.Writeline(argsJson);
-            var args = JsonSerializer.Deserialize<NewClientRequest>(argsJson);
-            if (args == null) return;
-            var clientId = args.Id;
+            var xmlSerializer = new XmlSerializer(typeof(NewClientRequest));
+            NewClientRequest request;
+            using (var stringReader = new StringReader(argsXml))
+            {
+                var deserialized = xmlSerializer.Deserialize(stringReader);
+                if (deserialized is not NewClientRequest deserializedRequest) return;
+                request = (NewClientRequest)deserialized;
+            }
+
+            var clientId = request.Id;
 
             SendLoadRequest(clientId);
         }
-
-        private void HandleDelClientRequest(string argsJson)
+        private void HandleDelClientRequest(string argsXml)
         {
             //Console.Writeline(argsJson);
-            var args = JsonSerializer.Deserialize<NewClientRequest>(argsJson);
-            if (args == null) return;
-            var clientId = args.Id;
+
+            var xmlSerializer = new XmlSerializer(typeof(DelClientRequest));
+            DelClientRequest request;
+            using (var stringReader = new StringReader(argsXml))
+            {
+                var deserialized = xmlSerializer.Deserialize(stringReader);
+                if (deserialized is not DelClientRequest deserializedRequest) return;
+                request = (DelClientRequest)deserialized;
+            }
+
+            var clientId = request.Id;
         }
 
-        private void HandleBorrowBookRequest(string argsJson)
+        private void HandleBorrowBookRequest(string argsXml)
         {
-            //Console.Writeline(argsJson);
-            var args = JsonSerializer.Deserialize<ReturnBorrowRequest>(argsJson);
-            if (args == null) return;
-            var clientId = args.ClientId;
-            var bookId = args.BookId;
+            var xmlSerializer = new XmlSerializer(typeof(ReturnBorrowRequest));
+            ReturnBorrowRequest request;
+            using (var stringReader = new StringReader(argsXml))
+            {
+                var deserialized = xmlSerializer.Deserialize(stringReader);
+                if (deserialized is not ReturnBorrowRequest deserializedRequest) return;
+                request = (ReturnBorrowRequest)deserialized;
+            }
+           
+            var clientId = request.ClientId;
+            var bookId = request.BookId;
             bool result = dataLayer.TryMarkAsUnavailable(bookId);
 
             if (result)
@@ -100,14 +165,21 @@ namespace LogicServer
                 SendBorrowResponse(clientId, bookId, 0);
             }
         }
-
-        private void HandleReturnBookRequest(string argsJson)
+        private void HandleReturnBookRequest(string argsXml)
         {
             //Console.Writeline(argsJson);
-            var args = JsonSerializer.Deserialize<ReturnBorrowRequest>(argsJson);
-            if (args == null) return;
-            var clientId = args.ClientId;
-            var bookId = args.BookId;
+
+            var xmlSerializer = new XmlSerializer(typeof(ReturnBorrowRequest));
+            ReturnBorrowRequest request;
+            using (var stringReader = new StringReader(argsXml))
+            {
+                var deserialized = xmlSerializer.Deserialize(stringReader);
+                if (deserialized is not ReturnBorrowRequest deserializedRequest) return;
+                request = (ReturnBorrowRequest)deserialized;
+            }
+
+            var clientId = request.ClientId;
+            var bookId = request.BookId;
             bool result = dataLayer.TryMarkAsAvailable(bookId);
 
             if (result)
@@ -121,12 +193,22 @@ namespace LogicServer
             }
         }
 
-        private void HandleSubscribeRequest(string argsJson)
+        private void HandleSubscribeRequest(string argsXml)
         {
             //Console.Writeline(argsJson);
-            var args = JsonSerializer.Deserialize<SubRequest>(argsJson);
-            if (args == null) return;
-            var clientId = args.Id;
+
+            var xmlSerializer = new XmlSerializer(typeof(SubRequest));
+            SubRequest request;
+            using (var stringReader = new StringReader(argsXml))
+            {
+                var deserialized = xmlSerializer.Deserialize(stringReader);
+                if (deserialized is not SubRequest deserializedRequest) return;
+                request = (SubRequest)deserialized;
+            }
+
+            
+            if (request == null) return;
+            var clientId = request.Id;
 
             lock (subscribersLock)
             {
@@ -143,7 +225,7 @@ namespace LogicServer
 
         public void OnMessageReceived(object sender, Request msg)
         {
-            //Console.Writeline($"{msg.Name} {msg.ArgsJson}");
+            Console.WriteLine($"{msg.Name} {msg.ArgsJson}");
             switch (msg.Name)
             {
                 case "NewClient":

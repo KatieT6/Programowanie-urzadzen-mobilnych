@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://microsoft.com/wsdl/types/" />
+  <xs:element name="NewClientRequest" nillable="true" type="NewClientRequest" />
+  <xs:complexType name="NewClientRequest">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" xmlns:q1="http://microsoft.com/wsdl/types/" type="q1:guid" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

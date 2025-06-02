@@ -1,8 +1,18 @@
 ﻿namespace Communication;
 
-public class NewClientRequest(Guid id)
+public class NewClientRequest
 {
-    private Guid id = id;
+    private Guid id;
+
+    public NewClientRequest()
+    {
+        id = Guid.Empty;
+    }
+
+    public NewClientRequest(Guid id)
+    {
+        this.Id = id;
+    }
 
     public Guid Id
     {

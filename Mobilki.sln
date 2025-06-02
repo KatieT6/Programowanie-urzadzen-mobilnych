@@ -40,6 +40,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{02EA68
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{7C624E9C-9BE9-431C-AB28-1868F033BB39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLGeneration", "XMLGeneration\XMLGeneration.csproj", "{9C56BB0E-EFC4-4317-A54E-1D3C6CC58106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLXSDValidator", "XMLXSDValidator\XMLXSDValidator.csproj", "{0CAA9236-0118-4FB6-85BA-ADE9B72EFAD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +110,14 @@ Global
 		{737445DB-A36F-414C-8854-DFC76C9987C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{737445DB-A36F-414C-8854-DFC76C9987C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{737445DB-A36F-414C-8854-DFC76C9987C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C56BB0E-EFC4-4317-A54E-1D3C6CC58106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C56BB0E-EFC4-4317-A54E-1D3C6CC58106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C56BB0E-EFC4-4317-A54E-1D3C6CC58106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C56BB0E-EFC4-4317-A54E-1D3C6CC58106}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAA9236-0118-4FB6-85BA-ADE9B72EFAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAA9236-0118-4FB6-85BA-ADE9B72EFAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAA9236-0118-4FB6-85BA-ADE9B72EFAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAA9236-0118-4FB6-85BA-ADE9B72EFAD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

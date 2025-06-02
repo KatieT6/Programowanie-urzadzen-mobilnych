@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://microsoft.com/wsdl/types/" />
+  <xs:element name="ReturnBorrowRequest" nillable="true" type="ReturnBorrowRequest" />
+  <xs:complexType name="ReturnBorrowRequest">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ClientId" xmlns:q1="http://microsoft.com/wsdl/types/" type="q1:guid" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BookId" xmlns:q2="http://microsoft.com/wsdl/types/" type="q2:guid" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-16"?>
+<LoadRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Books>
+    <Book>
+      <Title>Default Title</Title>
+      <Author>Author Title</Author>
+      <Year>0</Year>
+      <Type>None</Type>
+      <IsAvailable>true</IsAvailable>
+      <Id>4775e88f-476b-4c06-98c4-4d064ab6d9ec</Id>
+    </Book>
+    <Book>
+      <Title>Default Title</Title>
+      <Author>Author Title</Author>
+      <Year>0</Year>
+      <Type>None</Type>
+      <IsAvailable>true</IsAvailable>
+      <Id>d1ddbe82-f883-4482-8d72-28952387d998</Id>
+    </Book>
+    <Book>
+      <Title>Default Title</Title>
+      <Author>Author Title</Author>
+      <Year>0</Year>
+      <Type>None</Type>
+      <IsAvailable>true</IsAvailable>
+      <Id>630cac50-1890-4004-ab84-b468db5b4732</Id>
+    </Book>
+  </Books>
+</LoadRequest>

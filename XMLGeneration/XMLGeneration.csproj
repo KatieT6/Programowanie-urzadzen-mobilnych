@@ -9,8 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
-    <ProjectReference Include="..\Data\DataClient.csproj" />
-    <ProjectReference Include="..\XMLXSDValidator\XMLXSDValidator.csproj" />
+    <ProjectReference Include="..\DataCommon\DataCommon.csproj" />
   </ItemGroup>
 
 </Project>

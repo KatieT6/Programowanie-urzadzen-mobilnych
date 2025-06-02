@@ -10,6 +10,12 @@ public class ReturnBorrowRequest
     private Guid clientId;
     private Guid bookId;
 
+    public ReturnBorrowRequest()
+    {
+        clientId = Guid.Empty;
+        bookId = Guid.Empty;
+    }
+
     public ReturnBorrowRequest(Guid clientId, Guid bookId)
     {
         this.ClientId = clientId;

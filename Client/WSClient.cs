@@ -5,16 +5,18 @@ using System.Collections.ObjectModel;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Serialization;
 
 
 namespace Client;
 
 public class WSClient : IClient
 {
+    private Guid clientID;
     private ConcurrentQueue<string> messageQueue_ = new ConcurrentQueue<string>();
     private SemaphoreSlim signal_ = new SemaphoreSlim(0);
     private string uri_ = "ws://localhost:5000/ws/";
-    public Guid ClientId { get; set; }
+    public Guid ClientId { get => clientID; set { clientID = value; } }
 
     public WSClient() 
     {
@@ -27,15 +29,27 @@ public class WSClient : IClient
     public ClientWebSocket _webSocket;
 
 
+    public Task SendMessage(Request request)
+    {
+        string xmlMessage = "";
+        var xmlSerializer = new XmlSerializer(typeof(Request));
+        using (var stringWriter = new StringWriter())
+        {
+            xmlSerializer.Serialize(stringWriter, request);
+            xmlMessage = stringWriter.ToString();
+        }
+
+        return SendMessageAsync(xmlMessage);
+    }
+    public async Task SendMessageAsync(string message)
+    {
+        var buffer = Encoding.UTF8.GetBytes(message);
+        await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+
     public void ClientLoop()
     {
         var clientLoopTask = Task.Run(() => Start());
-        var clientMSG = Task.Run( () =>
-        { 
-            Task.Delay(3000).Wait();
-            _ = SendMessageAsync("Wiadomość od klienta");
-        });
-
     }
     public async Task Start()
     {
@@ -61,32 +75,43 @@ public class WSClient : IClient
 
         await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
     }
-
-    public Task SendMessage(Request request)
-    {
-        var message = JsonSerializer.Serialize(request);
-        return SendMessageAsync(message);
-    }
-    public async Task SendMessageAsync(string message)
-    {
-        var buffer = Encoding.UTF8.GetBytes(message);
-        await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
     private async Task ReceiveLoop()
     {
-        var buffer = new byte[1024];
+        var buffer = new byte[1024 * 100];
         while (_webSocket.State == WebSocketState.Open)
         {
             var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            //Console.Writeline($"Received: {msg}");
+            //Console.WriteLine($"Received: {msg}");
 
             try
             {
-                var request = JsonSerializer.Deserialize<Request>(msg);
-                if (request != null)
+                Request request;
+                var xmlSerializer = new XmlSerializer(typeof(Request));
+                using (var stringReader = new StringReader(msg))
                 {
+                    var deserialized = xmlSerializer.Deserialize(stringReader);
+                    if (deserialized is not Request deserializedRequest) continue;
+                    request = (Request)deserialized;
+                    Console.WriteLine($"Deserialized: {request.Name}");
+
+                    if(request.Name == "NewClient")
+                    {
+                        NewClientRequest newClientRequest;
+                        var newClientRequestXmlSerializer = new XmlSerializer(typeof(NewClientRequest));
+
+                        using (var newClientStringReader = new StringReader(request.ArgsJson))
+                        {
+                            var deserializedNCR = newClientRequestXmlSerializer.Deserialize(newClientStringReader);
+                            if (deserializedNCR is not NewClientRequest deserializedNCR2) continue;
+                            newClientRequest = (NewClientRequest)deserializedNCR;
+                        }
+
+                        ClientId = newClientRequest.Id;
+                        Console.WriteLine($"Client ID set to: {ClientId}");
+                        continue;
+                    }
+
                     messageRecieved?.Invoke(this, request);
                 }
             }
@@ -95,7 +120,5 @@ public class WSClient : IClient
                 //Console.Writeline("Failed to deserialize message: " + ex.Message);
             }
         }
-    }
-
-    
+    }    
 }

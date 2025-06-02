@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Communication;
 using DataCommon;
+using System.Xml.Serialization;
 
 
 namespace Server;
@@ -74,13 +75,32 @@ internal class Server : IServer, IObservable<IBook>
     private void SendNewClientRequest(Guid clientId)
     {
         NewClientRequest newClientSubrequest = new NewClientRequest(clientId);
-        Request newClientRequest = new Request("NewClient", JsonSerializer.Serialize(newClientSubrequest));
+
+        string xmlMessage = "";
+        var xmlSerializer = new XmlSerializer(typeof(NewClientRequest));
+        using (var stringWriter = new StringWriter())
+        {
+            xmlSerializer.Serialize(stringWriter, newClientSubrequest);
+            xmlMessage = stringWriter.ToString();
+        }
+
+        Request newClientRequest = new Request("NewClient", xmlMessage);
+        SendMessage(clientId, newClientRequest);
         InvokeMessgeRecieved(this, newClientRequest);
     }
     private void SendDelClientRequest(Guid clientId)
     {
         NewClientRequest delClientSubrequest = new NewClientRequest(clientId);
-        Request delClientRequest = new Request("DelClient", JsonSerializer.Serialize(delClientSubrequest));
+
+        string xmlMessage = "";
+        var xmlSerializer = new XmlSerializer(typeof(NewClientRequest));
+        using (var stringWriter = new StringWriter())
+        {
+            xmlSerializer.Serialize(stringWriter, delClientSubrequest);
+            xmlMessage = stringWriter.ToString();
+        }
+
+        Request delClientRequest = new Request("DelClient", xmlMessage);
         InvokeMessgeRecieved(this, delClientRequest);
     }
 
@@ -89,7 +109,7 @@ internal class Server : IServer, IObservable<IBook>
         var wsContext = await context.AcceptWebSocketAsync(null);
         var socket = wsContext.WebSocket;
         var clientId = Guid.NewGuid();
-        var buffer = new byte[4096];
+        var buffer = new byte[1024 * 100];
 
         AddClientSocketPair(clientId, socket);
         SendNewClientRequest(clientId);
@@ -102,10 +122,17 @@ internal class Server : IServer, IObservable<IBook>
         
                 if (result.MessageType == WebSocketMessageType.Close) break;
                 var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                //Console.WriteLine($"Received message from client {clientId}: {msg}");
                 Request request;
                 try
                 {
-                    request = JsonSerializer.Deserialize<Request>(msg);
+                    var xmlSerializer = new XmlSerializer(typeof(Request));
+                    using (var stringReader = new StringReader(msg))
+                    {
+                        var deserialized = xmlSerializer.Deserialize(stringReader);
+                        if(deserialized is not Request deserializedRequest) continue;
+                        request = (Request)deserialized;
+                    }
                 }
                 catch
                 {
@@ -139,6 +166,7 @@ internal class Server : IServer, IObservable<IBook>
         //Console.Writeline("Server loop started.");
         while (true)
         {
+            Console.WriteLine("Waiting for a new client connection...");
             var context = await listener.GetContextAsync();
             if (context.Request.IsWebSocketRequest)
             {
@@ -166,8 +194,17 @@ internal class Server : IServer, IObservable<IBook>
     }
     public Task SendMessage(Guid clientId, Request request)
     {
-        var message = JsonSerializer.Serialize(request);
-        var buffer = Encoding.UTF8.GetBytes(message);
+        string xmlMessage = "";
+        var xmlSerializer = new XmlSerializer(typeof(Request));
+        using (var stringWriter = new StringWriter())
+        {
+            xmlSerializer.Serialize(stringWriter, request);
+            xmlMessage = stringWriter.ToString();
+        }
+        
+        Console.WriteLine($"Sending message to client {clientId}: {xmlMessage}");
+
+        var buffer = Encoding.UTF8.GetBytes(xmlMessage);
         var segment = new ArraySegment<byte>(buffer);
 
         lock(clientsSocketsLock)

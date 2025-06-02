@@ -5,6 +5,8 @@ public class Request
     private string name = "";
     private string argsJson = "";
 
+    public Request() { }
+
     public Request(string name, string argsJson)
     {
         this.Name = name;

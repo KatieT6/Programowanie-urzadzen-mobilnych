@@ -53,6 +53,7 @@ namespace PresentationViewModel
                 updated = false;
                 if (e.PropertyName == nameof(ModelLibrary.Books))
                 {
+                    
                     _syncContext.Post(_ =>
                     {
                         if(!updated)

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://microsoft.com/wsdl/types/" />
+  <xs:element name="LoadRequest" nillable="true" type="LoadRequest" />
+  <xs:complexType name="LoadRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Books" type="ArrayOfBook" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBook">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Book" nillable="true" type="Book" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Book">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Title" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Author" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Year" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="BookType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsAvailable" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" xmlns:q1="http://microsoft.com/wsdl/types/" type="q1:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="BookType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SciFi" />
+      <xs:enumeration value="Fantasy" />
+      <xs:enumeration value="Romance" />
+      <xs:enumeration value="Horror" />
+      <xs:enumeration value="Thriller" />
+      <xs:enumeration value="Mystery" />
+      <xs:enumeration value="NonFiction" />
+      <xs:enumeration value="Historical" />
+      <xs:enumeration value="Biography" />
+      <xs:enumeration value="Poetry" />
+      <xs:enumeration value="None" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

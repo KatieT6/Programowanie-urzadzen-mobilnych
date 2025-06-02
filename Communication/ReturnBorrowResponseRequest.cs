@@ -14,7 +14,7 @@ namespace Communication
         public int Result { get => result; set => result = value; }
         public Guid BookId { get => bookId; set => bookId = value; }
 
-        ReturnBorrowResponseRequest()
+        public ReturnBorrowResponseRequest()
         {
             result = 0;
             bookId = Guid.Empty;

@@ -4,6 +4,7 @@ using DataServer;
 using Server;
 using System.Text.Json;
 using System.Xml.Serialization;
+using XMLXSDValidator;
 
 namespace LogicServer
 {
@@ -14,7 +15,7 @@ namespace LogicServer
         private IDataLayer dataLayer;
         private IServer server;
         private IPublisher publisher;
-
+        private XSDValidator xsdValidator = new XSDValidator();
         public IDataLayer DataLayer => dataLayer;
         public IServer Server => server;
 

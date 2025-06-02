@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
+    <ProjectReference Include="..\XMLXSDValidator\XMLXSDValidator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,7 @@
     <ProjectReference Include="..\DataCommon\DataCommon.csproj" />
     <ProjectReference Include="..\DataServer\DataServer.csproj" />
     <ProjectReference Include="..\Server\ServerPresentation.csproj" />
+    <ProjectReference Include="..\XMLXSDValidator\XMLXSDValidator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

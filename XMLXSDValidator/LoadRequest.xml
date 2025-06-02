@@ -7,7 +7,7 @@
       <Year>0</Year>
       <Type>None</Type>
       <IsAvailable>true</IsAvailable>
-      <Id>4775e88f-476b-4c06-98c4-4d064ab6d9ec</Id>
+      <Id>11e6a6d8-3062-4ba1-95e1-b1ba523436f8</Id>
     </Book>
     <Book>
       <Title>Default Title</Title>
@@ -15,7 +15,7 @@
       <Year>0</Year>
       <Type>None</Type>
       <IsAvailable>true</IsAvailable>
-      <Id>d1ddbe82-f883-4482-8d72-28952387d998</Id>
+      <Id>caf9f3f5-b581-4368-a20e-75121ccddda7</Id>
     </Book>
     <Book>
       <Title>Default Title</Title>
@@ -23,7 +23,7 @@
       <Year>0</Year>
       <Type>None</Type>
       <IsAvailable>true</IsAvailable>
-      <Id>630cac50-1890-4004-ab84-b468db5b4732</Id>
+      <Id>78e64aa0-fe6d-4a17-bde9-b0ec3e201b0f</Id>
     </Book>
   </Books>
 </LoadRequest>

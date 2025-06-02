@@ -5,6 +5,7 @@ using System.Text.Json;
 using Communication;
 using DataCommon;
 using System.Xml.Serialization;
+using XMLXSDValidator;
 
 
 namespace Server;
@@ -20,7 +21,9 @@ internal class Server : IServer, IObservable<IBook>
     public object clientsSocketsLock = new object();
     public Dictionary<WebSocket, Guid> socketsClients = new Dictionary<WebSocket, Guid>();
     public object socketsClientsLock = new object();
-    
+
+    XSDValidator xmlXSDValidator = new XSDValidator();
+
     public Server() 
     {
         listener.Prefixes.Add(prefix);
@@ -122,6 +125,9 @@ internal class Server : IServer, IObservable<IBook>
         
                 if (result.MessageType == WebSocketMessageType.Close) break;
                 var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
+
+                xmlXSDValidator.Validate(msg, typeof(Request));
+
                 //Console.WriteLine($"Received message from client {clientId}: {msg}");
                 Request request;
                 try
@@ -146,6 +152,7 @@ internal class Server : IServer, IObservable<IBook>
         }
         finally
         {
+            Console.WriteLine($"Client disconnected: {clientId}");
             RemoveClientSocketPair(clientId, socket);
             await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
             socket.Dispose();
@@ -202,7 +209,7 @@ internal class Server : IServer, IObservable<IBook>
             xmlMessage = stringWriter.ToString();
         }
         
-        Console.WriteLine($"Sending message to client {clientId}: {xmlMessage}");
+        //Console.WriteLine($"Sending message to client {clientId}: {xmlMessage}");
 
         var buffer = Encoding.UTF8.GetBytes(xmlMessage);
         var segment = new ArraySegment<byte>(buffer);

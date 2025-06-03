@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
 using XMLXSDValidator;
+using System.Reactive.Subjects;
+
 
 
 namespace Client;
@@ -18,9 +20,9 @@ public class WSClient : IClient, IObservable<Request>
     private SemaphoreSlim signal_ = new SemaphoreSlim(0);
     private string uri_ = "ws://localhost:5000/ws/";
 
-    private List<IObserver<Request>> observers = new();
-
     public Guid ClientId { get => clientID; set { clientID = value; } }
+    XSDValidator xmlXSDValidator = new XSDValidator();
+
 
     public WSClient() 
     {
@@ -28,10 +30,16 @@ public class WSClient : IClient, IObservable<Request>
         ClientId = new Guid(); 
     }
 
-    public event EventHandler<Request> messageRecieved;
+    //public event EventHandler<Request> messageRecieved;
+    private Subject<Request> _subject = new Subject<Request>();
+
 
     public ClientWebSocket _webSocket;
 
+    public IDisposable Subscribe(IObserver<Request> observer)
+    {
+        return _subject.Subscribe(observer);
+    }
 
     public Task SendMessage(Request request)
     {
@@ -119,9 +127,9 @@ public class WSClient : IClient, IObservable<Request>
                         continue;
                     }
 
-                    messageRecieved?.Invoke(this, request);
-                    foreach (var observer in observers)
-                        observer.OnNext(request);
+                    //messageRecieved?.Invoke(this, request);
+                    _subject.OnNext(request);
+
                 }
             }
             catch (Exception ex)
@@ -131,29 +139,4 @@ public class WSClient : IClient, IObservable<Request>
         }
     }
 
-    public IDisposable Subscribe(IObserver<Request> observer)
-    {
-
-        if (!observers.Contains(observer))
-            observers.Add(observer);
-        return new Unsubscriber(observers, observer);
-    }
-
-    internal class Unsubscriber : IDisposable
-    {
-        private List<IObserver<Request>> _observers;
-        private IObserver<Request> _observer;
-
-        public Unsubscriber(List<IObserver<Request>> observers, IObserver<Request> observer)
-        {
-            _observers = observers;
-            _observer = observer;
-        }
-
-        public void Dispose()
-        {
-            if (_observer != null && _observers.Contains(_observer))
-                _observers.Remove(_observer);
-        }
-    }
 }

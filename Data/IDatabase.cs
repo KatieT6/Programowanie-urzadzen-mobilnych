@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataClient
 {
-    public interface IDatabase
+    public interface IDatabase 
     {
         public List<IBook> Shelf { get;}
         public void AddBook(IBook book);

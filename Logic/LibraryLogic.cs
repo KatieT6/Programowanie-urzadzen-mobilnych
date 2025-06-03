@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace LogicClient
 {
-    public class LibraryLogic : ILibraryLogic
+    public class LibraryLogic : ILibraryLogic, IObserver<Request>
     {
         private readonly object _lock = new object();
         private IDatabase library;
@@ -26,13 +26,21 @@ namespace LogicClient
         {
             this.Library = library;
             Client = client;
-            if (Client != null)
+
+            /*if (Client != null)
             {
                 Client.messageRecieved += OnMessageReceived!;
+            }*/
+
+            if (Client is IObservable<Request> observable)
+            {
+                _subscription = observable.Subscribe(this);
             }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        private IDisposable? _subscription;
+
 
         public void AddBook(IBook book)
         {
@@ -265,7 +273,7 @@ namespace LogicClient
             OnPropertyChanged(nameof(Library));
         }
 
-        private void OnMessageReceived(object sender, Request request)
+        /*private void OnMessageReceived(object sender, Request request)
         {
             switch (request.Name)
             {
@@ -281,6 +289,32 @@ namespace LogicClient
                 default:
                     break;
             }
+        }*/
+
+        public void OnNext(Request request)
+        {
+            switch (request.Name)
+            {
+                case "BorrowBook":
+                    HandleBorrowBookRequest(request);
+                    break;
+                case "ReturnBook":
+                    HandleReturnBookRequest(request);
+                    break;
+                case "LoadRequest":
+                    HandleLoadRequest(request);
+                    break;
+            }
+        }
+
+        public void OnCompleted()
+        {
+            Console.WriteLine("WebSocket zakończył transmisję.");
+        }
+
+        public void OnError(Exception error)
+        {
+            Console.WriteLine($"Błąd WebSocket: {error.Message}");
         }
     }
 }
